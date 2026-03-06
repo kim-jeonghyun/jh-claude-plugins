@@ -1,0 +1,56 @@
+name: Validate Plugin Manifests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON manifests
+        run: |
+          echo "Checking marketplace.json..."
+          jq . .claude-plugin/marketplace.json > /dev/null
+
+          echo "Checking plugin.json files..."
+          find plugins -name plugin.json -exec sh -c 'echo "  {}"; jq . "{}" > /dev/null' \;
+
+          echo "All JSON manifests valid."
+
+      - name: Check SKILL.md description length
+        run: |
+          EXIT_CODE=0
+          for skill in $(find plugins -name SKILL.md); do
+            desc=$(sed -n 's/^description: //p' "$skill")
+            len=$(echo -n "$desc" | wc -m | tr -d ' ')
+            if [ "$len" -gt 120 ]; then
+              echo "FAIL: $skill description is $len chars (max 120)"
+              EXIT_CODE=1
+            else
+              echo "OK: $skill ($len chars)"
+            fi
+          done
+          exit $EXIT_CODE
+
+      - name: Check internal markdown links
+        run: |
+          BROKEN=0
+          for md in README.md CONTRIBUTING.md CLAUDE.md; do
+            if [ ! -f "$md" ]; then continue; fi
+            while IFS= read -r link; do
+              if [ -n "$link" ] && [ ! -e "$link" ]; then
+                echo "BROKEN: $md -> $link"
+                BROKEN=1
+              fi
+            done < <(sed -n 's/.*\[.*\](\([^)#]*\)).*/\1/p' "$md" | grep -v '^http')
+          done
+          if [ "$BROKEN" -eq 1 ]; then
+            echo "Broken links found!"
+            exit 1
+          fi
+          echo "All internal links valid."
