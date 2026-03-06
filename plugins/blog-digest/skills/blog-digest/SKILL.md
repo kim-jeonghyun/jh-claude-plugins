@@ -1,6 +1,6 @@
 ---
 name: blog-digest
-description: Digest a blog article into a structured study document with comprehension quizzes. Triggers on "블로그 정리", "blog digest", or blog URL.
+description: Digest a blog article into a structured study document with comprehension quizzes.
 ---
 
 # Blog Digest
