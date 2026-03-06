@@ -1,0 +1,9 @@
+{
+  "name": "blog-digest",
+  "version": "0.1.0",
+  "description": "Blog article digest with summaries, insights, Korean translation, and study quizzes",
+  "author": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  }
+}
