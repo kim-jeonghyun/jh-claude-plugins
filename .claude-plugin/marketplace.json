@@ -10,6 +10,11 @@
       "name": "blog-digest",
       "description": "Blog article digest with summaries, insights, Korean translation, and study quizzes",
       "source": "./plugins/blog-digest"
+    },
+    {
+      "name": "youtube-digest",
+      "description": "YouTube video digest with adaptive depth, topic segmentation, and study quizzes",
+      "source": "./plugins/youtube-digest"
     }
   ]
 }

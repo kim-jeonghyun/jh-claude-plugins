@@ -13,6 +13,7 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
 | Plugin | Description | Version |
 |--------|-------------|---------|
 | [blog-digest](plugins/blog-digest/) | Blog article digest with study quizzes | 0.1.0 |
+| [youtube-digest](plugins/youtube-digest/) | YouTube video digest with adaptive depth | 1.0.0 |
 
 ## Installation
 
