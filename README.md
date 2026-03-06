@@ -33,5 +33,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## Author
 
 [kim-jeonghyun](https://github.com/kim-jeonghyun)
-
----

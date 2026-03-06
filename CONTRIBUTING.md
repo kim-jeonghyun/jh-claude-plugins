@@ -39,9 +39,9 @@ Examples:
 ## Validation & Testing
 
 ```bash
-# Validate plugin manifests (run before push)
-claude plugin validate ~/dev/jh-claude-plugins
-claude plugin validate ~/dev/jh-claude-plugins/plugins/blog-digest
+# Validate plugin manifests (run from repo root, before push)
+claude plugin validate .
+claude plugin validate ./plugins/blog-digest
 
 # Install locally for testing
 claude plugin marketplace add kim-jeonghyun/jh-claude-plugins
