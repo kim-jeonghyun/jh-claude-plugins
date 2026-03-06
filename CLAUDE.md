@@ -12,7 +12,7 @@ plugins/<name>/
   skills/<skill-name>/
     SKILL.md                      # Skill workflow definition (frontmatter + steps)
     references/                   # Supporting docs referenced by SKILL.md
-docs/plans/                       # Implementation plans (not shipped)
+docs/plans/                       # Development plans (committed for reference)
 CODE_OF_CONDUCT.md                # Contributor Covenant v2.1
 CONTRIBUTING.md                   # Public contributor guide
 LICENSE                           # MIT License

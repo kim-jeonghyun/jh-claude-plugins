@@ -4,6 +4,10 @@
 
 Claude Code plugins for learning and productivity. Each plugin is a pure configuration-based skill (SKILL.md) that extends Claude Code with specialized workflows -- no runtime code required.
 
+### What are Claude Code plugins?
+
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugins are configuration-only packages that teach Claude new skills via `SKILL.md` files. They require no runtime code -- just structured instructions that Claude follows using its built-in tools (WebFetch, Write, etc.).
+
 ## Plugins
 
 | Plugin | Description | Version |
