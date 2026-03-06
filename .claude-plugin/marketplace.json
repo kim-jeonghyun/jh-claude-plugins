@@ -1,0 +1,15 @@
+{
+  "name": "jh-claude-plugins",
+  "owner": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  },
+  "description": "Claude Code plugins for learning and productivity",
+  "plugins": [
+    {
+      "name": "blog-digest",
+      "description": "Blog article digest with summaries, insights, Korean translation, and study quizzes",
+      "source": "./plugins/blog-digest"
+    }
+  ]
+}
