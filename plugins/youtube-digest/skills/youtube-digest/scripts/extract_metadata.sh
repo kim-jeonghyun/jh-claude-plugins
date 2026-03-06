@@ -9,6 +9,12 @@ if [ -z "$URL" ]; then
   exit 1
 fi
 
+# Validate URL format
+case "$URL" in
+  https://*|http://*) ;;
+  *) echo "ERROR: Invalid URL. Must start with http:// or https://"; exit 1 ;;
+esac
+
 # Reject playlist URLs — only single video supported
 case "$URL" in
   *list=*|*playlist*)
@@ -16,6 +22,12 @@ case "$URL" in
     exit 1
     ;;
 esac
+
+# Check yt-dlp is installed
+if ! command -v yt-dlp &>/dev/null; then
+  echo "ERROR: yt-dlp is not installed. Install with: brew install yt-dlp (macOS) / pip install yt-dlp (Linux/Windows)"
+  exit 1
+fi
 
 yt-dlp --dump-json --no-download "$URL" 2>/dev/null | \
   python3 -c "
