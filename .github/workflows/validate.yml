@@ -18,15 +18,16 @@ jobs:
           jq . .claude-plugin/marketplace.json > /dev/null
 
           echo "Checking plugin.json files..."
-          find plugins -name plugin.json -exec sh -c 'echo "  {}"; jq . "{}" > /dev/null' \;
+          find plugins -type f -name plugin.json -exec sh -c 'echo "  {}"; jq . "{}" > /dev/null' \;
 
           echo "All JSON manifests valid."
 
       - name: Check SKILL.md description length
         run: |
           EXIT_CODE=0
-          for skill in $(find plugins -name SKILL.md); do
-            desc=$(sed -n 's/^description: //p' "$skill")
+          export LC_ALL=C.UTF-8
+          for skill in $(find plugins -type f -name SKILL.md); do
+            desc=$(sed -n 's/^description: //p' "$skill" | sed "s/^'//;s/'$//;s/^\"//;s/\"$//")
             len=$(echo -n "$desc" | wc -m | tr -d ' ')
             if [ "$len" -gt 120 ]; then
               echo "FAIL: $skill description is $len chars (max 120)"
@@ -47,7 +48,7 @@ jobs:
                 echo "BROKEN: $md -> $link"
                 BROKEN=1
               fi
-            done < <(sed -n 's/.*\[.*\](\([^)#]*\)).*/\1/p' "$md" | grep -v '^http')
+            done < <(grep -o '\[[^]]*\]([^)]*)' "$md" | sed 's/.*(\([^)]*\)).*/\1/' | grep -v '^http')
           done
           if [ "$BROKEN" -eq 1 ]; then
             echo "Broken links found!"
