@@ -5,5 +5,8 @@
   "author": {
     "name": "kim-jeonghyun",
     "url": "https://github.com/kim-jeonghyun"
-  }
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kim-jeonghyun/jh-claude-plugins",
+  "keywords": ["blog", "digest", "study", "quiz", "korean"]
 }

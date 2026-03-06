@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# oh-my-claudecode state (local)
+.omc/
+
+# Environment / secrets
+.env
+.env.local
+
+# Node (if tooling added later)
+node_modules/
+npm-debug.log*
+
+# Logs
+*.log
+
+# Temp files
+tmp/
+temp/
