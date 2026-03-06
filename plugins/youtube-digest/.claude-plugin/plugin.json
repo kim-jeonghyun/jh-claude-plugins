@@ -1,0 +1,12 @@
+{
+  "name": "youtube-digest",
+  "version": "1.0.0",
+  "description": "YouTube video digest with adaptive depth, topic segmentation, and study quizzes",
+  "author": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kim-jeonghyun/jh-claude-plugins",
+  "keywords": ["youtube", "digest", "study", "quiz", "korean", "transcript"]
+}
