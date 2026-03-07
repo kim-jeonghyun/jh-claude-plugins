@@ -55,6 +55,26 @@ Settings are stored in your project's MEMORY.md.
 - **Subtitle priority**: manual subtitles preferred over auto-generated
 - **Cross-platform**: macOS, Linux, Windows supported
 
+## Notion Integration (Optional)
+
+For direct Notion save (instead of copy-paste), set up the official Notion MCP server:
+
+1. Create a Notion Integration at https://www.notion.so/profile/integrations
+   - Enable: Read content, Insert content, Update content
+   - Copy the generated token (`ntn_...` or `secret_...`)
+
+2. Connect your Notion pages: Open target page → `···` → Connections → Add your integration
+
+3. Install the MCP server:
+   ```bash
+   claude mcp add notion -- npx -y @notionhq/notion-mcp-server
+   # When prompted, enter your NOTION_TOKEN
+   ```
+
+4. During first run, choose "Notion (copy-paste)" as save target. The plugin auto-detects the MCP server and saves directly.
+
+Without the MCP server, the plugin still works — it generates the document and prompts you to copy-paste into Notion.
+
 ## Workflow
 
 1. Config check (first run: setup wizard)

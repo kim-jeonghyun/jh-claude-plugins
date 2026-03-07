@@ -124,10 +124,21 @@ If ambiguous, ask user via AskUserQuestion with their categories as options.
 If no matching category, offer to create a new one (and update MEMORY.md config).
 
 **If `save_target: notion`:**
+
+Check if Notion MCP tools are available (e.g., `notion_create_page`, `notion_append_block_children`).
+
+*With Notion MCP (recommended):*
+1. Generate the full document as normal
+2. Use Notion MCP to create a new page in the user's configured workspace/database
+3. Report: "Saved to Notion: {page title}" with link if available
+
+*Without Notion MCP (fallback):*
 1. Generate the full document as normal
 2. Display the document content to the user
 3. Inform: "Document ready. Copy the content above and paste into Notion."
-4. Skip file write and duplicate check steps below
+4. Suggest: "For direct Notion integration, install the Notion MCP server. See README for setup instructions."
+
+Skip file write and duplicate check steps below for both cases.
 
 **If file-based save (Obsidian / local / custom path):**
 
