@@ -11,9 +11,17 @@ YouTube video analysis with adaptive depth based on video length.
 
 ## Workflow
 
-### 0. Configuration Check
+### 0. Configuration Check (MANDATORY — do NOT skip or assume defaults)
 
-Check project MEMORY.md for `youtube-digest` config section. If not found, run setup:
+Search for `## YouTube Digest Settings` in this order:
+1. **Project MEMORY.md** — the auto-memory file for the current project
+2. **Global MEMORY.md** — `~/.claude/memory/MEMORY.md` (shared across all projects)
+
+**If found in either location**: read the settings and proceed to Step 1.
+
+**If NOT found in either location**: STOP. You MUST run the setup wizard below before doing ANY metadata extraction or file writing. Do NOT infer, guess, or use default paths.
+
+#### First-Run Setup Wizard
 
 1. AskUserQuestion: "Where should video digests be saved?"
    - Options: "Current project (video-digests/)" / "Custom path" / "Obsidian vault" / "Notion (copy-paste)"
@@ -22,7 +30,11 @@ Check project MEMORY.md for `youtube-digest` config section. If not found, run s
 2. AskUserQuestion: "What categories do you want for organizing digests?"
    - Offer text input for comma-separated category names
    - Example: "tech, business, investing, science, opinion"
-3. Save config to project MEMORY.md under `## YouTube Digest Settings`:
+3. AskUserQuestion: "Apply this setting to all projects, or this project only?"
+   - Options: "All projects (global)" / "This project only"
+4. Save config to the chosen MEMORY.md under `## YouTube Digest Settings`:
+   - Global: `~/.claude/memory/MEMORY.md`
+   - Project only: the current project's auto-memory MEMORY.md
 
 ```
 ## YouTube Digest Settings
@@ -31,7 +43,7 @@ Check project MEMORY.md for `youtube-digest` config section. If not found, run s
 - **Categories**: {comma-separated list}
 ```
 
-If config exists, read it and proceed.
+**Precedence**: If config exists in BOTH project and global, project config wins (allows per-project override).
 
 ### 1. Metadata Extraction
 

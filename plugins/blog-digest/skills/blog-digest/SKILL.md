@@ -11,25 +11,39 @@ Blog article -> structured study document -> comprehension quiz.
 
 ## Workflow
 
-### 0. Configuration Check
+### 0. Configuration Check (MANDATORY — do NOT skip or assume defaults)
 
-Check project MEMORY.md for `blog-digest` config section. If not found, run setup:
+Search for `## Blog Digest Settings` in this order:
+1. **Project MEMORY.md** — the auto-memory file for the current project
+2. **Global MEMORY.md** — `~/.claude/memory/MEMORY.md` (shared across all projects)
+
+**If found in either location**: read the settings and proceed to Step 1.
+
+**If NOT found in either location**: STOP. You MUST run the setup wizard below before doing ANY content extraction or file writing. Do NOT infer, guess, or use default paths.
+
+#### First-Run Setup Wizard
 
 1. AskUserQuestion: "Where should blog digests be saved?"
-   - Options: "Current project (blog-digests/)" / "Custom path" / "Obsidian vault"
+   - Options: "Current project (blog-digests/)" / "Custom path" / "Obsidian vault" / "Notion (copy-paste)"
    - If custom/Obsidian: ask for absolute path
+   - If Notion: set `save_target: notion` (no file path needed)
 2. AskUserQuestion: "What categories do you want for organizing digests?"
    - Offer text input for comma-separated category names
    - Example: "tech, business, investing, science, opinion"
-3. Save config to project MEMORY.md under `## Blog Digest Settings`:
+3. AskUserQuestion: "Apply this setting to all projects, or this project only?"
+   - Options: "All projects (global)" / "This project only"
+4. Save config to the chosen MEMORY.md under `## Blog Digest Settings`:
+   - Global: `~/.claude/memory/MEMORY.md`
+   - Project only: the current project's auto-memory MEMORY.md
 
 ```
 ## Blog Digest Settings
 - **Save path**: {chosen path}
+- **Save target**: file | notion
 - **Categories**: {comma-separated list}
 ```
 
-If config exists, read it and proceed.
+**Precedence**: If config exists in BOTH project and global, project config wins (allows per-project override).
 
 ### 1. Content Extraction (WebFetch)
 
