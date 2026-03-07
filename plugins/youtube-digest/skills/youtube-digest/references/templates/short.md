@@ -37,6 +37,9 @@ categories:
 ## Full Script (Korean)
 [00:00] ...
 [00:15] ...
+
+## Quiz Results
+(recorded after quiz)
 ~~~
 
 ## Guidelines

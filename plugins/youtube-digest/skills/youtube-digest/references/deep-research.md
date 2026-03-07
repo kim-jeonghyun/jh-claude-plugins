@@ -43,7 +43,7 @@ Append `## Deep Research` section to the original video digest file:
 
 ### Extended Insights
 
-{Synthesis of article content + web search results}
+{Synthesis of video content + web search results}
 
 ### Actionable Next Steps
 

@@ -7,9 +7,9 @@
 ### Level 1 (Basic) - Insight Comprehension
 
 Verify understanding of core message and key concepts:
-- "What is the core message of this article?"
+- "What is the core message of this video?"
 - "What principle did the author emphasize most?"
-- "What main problem does the article identify?"
+- "What main problem does the video identify?"
 
 ### Level 2 (Intermediate) - Insight-Detail Connection
 
@@ -58,8 +58,8 @@ After each level:
 1. Show correct/incorrect immediately
 2. For wrong answers, provide detailed explanation:
    - What the correct answer is
-   - Why it is correct (reference article content)
-   - Relevant section of the article
+   - Why it is correct (reference video content)
+   - Relevant section of the video
 
 ## Quiz Scaling by Content Length
 
