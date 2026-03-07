@@ -55,6 +55,7 @@ Determine preset from `duration_seconds`:
 | LONG   | > 7200s (2h+) | `references/templates/long.md` | Key quotes | 12-15 (4-5 x 3) |
 
 Boundary handling: exactly 1800s = MEDIUM, exactly 7200s = LONG.
+Note: For very short videos (<60s), use SHORT preset but reduce quiz to 6 questions (2 per level).
 
 Announce to user: "This is a {preset} video ({duration}). Using {preset} analysis template."
 
@@ -177,6 +178,8 @@ After quiz, ask via AskUserQuestion:
 | Playlist URL | "Playlist URLs not supported. Provide a single video URL." -> stop |
 | Transcript exceeds context | Reduce chunk size (3000 -> 2000 lines) |
 | Save path inaccessible | Error message + suggest alternative path |
+| Age-restricted video | "Age-restricted video. Try with browser cookies: yt-dlp --cookies-from-browser chrome" -> stop |
+| Members-only / premium | "This video requires membership access and cannot be processed." -> stop |
 
 ## Untrusted Content Handling
 

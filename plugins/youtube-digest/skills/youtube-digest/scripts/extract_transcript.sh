@@ -22,9 +22,13 @@ if ! command -v yt-dlp &>/dev/null; then
   exit 1
 fi
 
-# SRT format (stable). Original used --convert-subs json3 which is invalid.
-if ! yt-dlp --write-auto-sub --sub-lang "ko,en" --sub-format srt --skip-download \
-  -o "$OUTPUT_DIR/yt_transcript.%(ext)s" "$URL"; then
-  echo "ERROR: Failed to extract subtitles. The video may not have subtitles available."
-  exit 1
+# Try manual subtitles first (higher quality), fall back to auto-generated
+# Priority: ko manual > en manual > ko auto > en auto
+if ! yt-dlp --write-sub --sub-lang "ko,en" --sub-format srt --skip-download \
+  -o "$OUTPUT_DIR/yt_transcript.%(ext)s" "$URL" 2>/dev/null; then
+  if ! yt-dlp --write-auto-sub --sub-lang "ko,en" --sub-format srt --skip-download \
+    -o "$OUTPUT_DIR/yt_transcript.%(ext)s" "$URL"; then
+    echo "ERROR: Failed to extract subtitles. The video may not have subtitles available."
+    exit 1
+  fi
 fi
