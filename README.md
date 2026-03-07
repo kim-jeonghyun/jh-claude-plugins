@@ -22,9 +22,13 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
    claude plugin marketplace add kim-jeonghyun/jh-claude-plugins
    ```
 
-2. Install plugin:
+2. Install a plugin:
    ```bash
+   # Blog article digest
    claude plugin install blog-digest@jh-claude-plugins
+
+   # YouTube video digest (requires yt-dlp)
+   claude plugin install youtube-digest@jh-claude-plugins
    ```
 
 ## Contributing
