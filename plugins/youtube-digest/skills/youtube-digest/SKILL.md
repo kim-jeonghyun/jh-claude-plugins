@@ -16,8 +16,9 @@ YouTube video analysis with adaptive depth based on video length.
 Check project MEMORY.md for `youtube-digest` config section. If not found, run setup:
 
 1. AskUserQuestion: "Where should video digests be saved?"
-   - Options: "Current project (video-digests/)" / "Custom path" / "Obsidian vault"
+   - Options: "Current project (video-digests/)" / "Custom path" / "Obsidian vault" / "Notion (copy-paste)"
    - If custom/Obsidian: ask for absolute path
+   - If Notion: set `save_target: notion` (no file path needed)
 2. AskUserQuestion: "What categories do you want for organizing digests?"
    - Offer text input for comma-separated category names
    - Example: "tech, business, investing, science, opinion"
@@ -26,6 +27,7 @@ Check project MEMORY.md for `youtube-digest` config section. If not found, run s
 ```
 ## YouTube Digest Settings
 - **Save path**: {chosen path}
+- **Save target**: file | notion
 - **Categories**: {comma-separated list}
 ```
 
@@ -120,6 +122,14 @@ Fill all sections with analysis from Steps 2.5 and 3-4.
 Suggest category from the user's configured category list.
 If ambiguous, ask user via AskUserQuestion with their categories as options.
 If no matching category, offer to create a new one (and update MEMORY.md config).
+
+**If `save_target: notion`:**
+1. Generate the full document as normal
+2. Display the document content to the user
+3. Inform: "Document ready. Copy the content above and paste into Notion."
+4. Skip file write and duplicate check steps below
+
+**If file-based save (Obsidian / local / custom path):**
 
 Save path: `{configured_path}/{category}/{YYYY-MM-DD}-{sanitized-title}.md`
 
