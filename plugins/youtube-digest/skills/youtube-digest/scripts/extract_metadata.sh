@@ -9,10 +9,10 @@ if [ -z "$URL" ]; then
   exit 1
 fi
 
-# Validate URL format
+# Validate URL is a YouTube domain
 case "$URL" in
-  https://*|http://*) ;;
-  *) echo "ERROR: Invalid URL. Must start with http:// or https://"; exit 1 ;;
+  https://www.youtube.com/*|https://youtube.com/*|https://youtu.be/*|https://m.youtube.com/*) ;;
+  *) echo "ERROR: Only YouTube URLs are supported."; exit 1 ;;
 esac
 
 # Reject playlist URLs — only single video supported
