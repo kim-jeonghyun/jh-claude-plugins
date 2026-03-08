@@ -67,15 +67,29 @@ To save digests directly into your Obsidian vault:
 1. During first run, choose **"Obsidian vault"** as save path
 2. Enter the absolute path to your vault folder:
    ```
-   # macOS example
+   # macOS (local)
    /Users/yourname/Documents/ObsidianVault
 
-   # Linux example
+   # macOS (iCloud sync)
+   /Users/yourname/Library/Mobile Documents/iCloud~md~obsidian/Documents/VaultName
+
+   # macOS (Google Drive)
+   /Users/yourname/Library/CloudStorage/GoogleDrive-you@gmail.com/My Drive/ObsidianVault
+
+   # macOS (Dropbox)
+   /Users/yourname/Dropbox/ObsidianVault
+
+   # Linux (local)
    /home/yourname/ObsidianVault
 
-   # Windows example
+   # Windows (local)
    C:\Users\yourname\Documents\ObsidianVault
+
+   # Windows (OneDrive)
+   C:\Users\yourname\OneDrive\ObsidianVault
    ```
+
+   > **Tip**: Not sure where your vault is? Open Obsidian → Settings → Files and links → check "Vault path" at the top.
 3. Set up your categories (these become subfolders in the vault)
 
 Digests are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
