@@ -40,10 +40,15 @@ Also: "영상 요약", "transcript 번역", "YouTube digest", "영상 퀴즈"
 ## First Run
 
 On first use, the plugin asks you to configure:
-1. **Save path** - where to save digest files (default: `video-digests/` in current project, or Obsidian vault)
-2. **Categories** - folder categories for organizing digests
+1. **Save path** — where to save digest files
+   - `video-digests/` in current project (default)
+   - Custom absolute path
+   - Obsidian vault (see [Obsidian Integration](#obsidian-integration-optional) below)
+   - Notion (see [Notion Integration](#notion-integration-optional) below)
+2. **Categories** — folder categories for organizing digests (e.g., `tech, business, investing`)
+3. **Scope** — apply settings globally (all projects) or to the current project only
 
-Settings are stored in your project's MEMORY.md.
+Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMORY.md`).
 
 ## Features
 
@@ -54,6 +59,34 @@ Settings are stored in your project's MEMORY.md.
 - **Output flexibility**: Obsidian / Notion / local file save
 - **Subtitle priority**: manual subtitles preferred over auto-generated
 - **Cross-platform**: macOS, Linux, Windows supported
+
+## Obsidian Integration (Optional)
+
+To save digests directly into your Obsidian vault:
+
+1. During first run, choose **"Obsidian vault"** as save path
+2. Enter the absolute path to your vault folder:
+   ```
+   # macOS example
+   /Users/yourname/Documents/ObsidianVault
+
+   # Linux example
+   /home/yourname/ObsidianVault
+
+   # Windows example
+   C:\Users\yourname\Documents\ObsidianVault
+   ```
+3. Set up your categories (these become subfolders in the vault)
+
+Digests are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
+
+```
+YourVault/
+  tech/
+    2026-03-08-video-title.md
+  investing/
+    2026-03-07-another-video.md
+```
 
 ## Notion Integration (Optional)
 
