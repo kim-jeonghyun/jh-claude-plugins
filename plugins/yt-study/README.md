@@ -6,19 +6,19 @@ YouTube video study notes with adaptive depth based on video length.
 
 This plugin is a fork of **youtube-digest** by [Team Attention](https://github.com/team-attention) (MIT License).
 
-The original plugin provided YouTube video summarization for Claude Code. This fork was built on that foundation and adds:
+The original plugin provided YouTube video summarization for Claude Code. This fork was built on that foundation and adds 7 concrete improvements:
 
-- **Adaptive depth analysis** — SHORT / MEDIUM / LONG presets based on video duration
-- **2-pass topic segmentation** — auto-detected topic boundaries with timestamps for 30min+ videos
-- **Comprehension quizzes** — 3-level study quizzes scaled by video length (9-15 questions)
-- **SRT subtitle extraction** — more reliable format (avoids upstream json3 parsing issues)
-- **Obsidian / Notion integration** — direct save to note-taking platforms
-- **Multi-language support** — configurable output language (Korean, English, Japanese, etc.)
-- **Deep Research follow-up** — optional web deep-dive after quiz
+1. **Adaptive depth analysis** — SHORT / MEDIUM / LONG presets based on video duration
+2. **2-pass topic segmentation** — auto-detected topic boundaries with timestamps for 30min+ videos
+3. **Comprehension quizzes** — 3-level study quizzes scaled by video length (9-15 questions)
+4. **SRT subtitle extraction** — more reliable format (avoids upstream json3 parsing issues)
+5. **Obsidian / Notion integration** — direct save to note-taking platforms
+6. **Multi-language support** — configurable output language (Korean, English, Japanese, etc.)
+7. **Deep Research follow-up** — optional web deep-dive after quiz
 
 See [LICENSE.original](LICENSE.original) for the original MIT license text.
 
-> **Note**: The original repository (`team-attention/claude-plugins`) is no longer publicly available.
+> **Note**: The original repository (`team-attention/claude-plugins`) is no longer publicly available (confirmed on 2026-03-09).
 
 ## Installation
 
@@ -32,11 +32,12 @@ claude plugin install yt-study@jh-claude-plugins
 
 ### Migrating from youtube-digest
 
-If you previously used `youtube-digest` (from either team-attention or this repo):
+If you previously used the legacy `youtube-digest` plugin name (from team-attention or this repo):
 
-1. Uninstall the old plugin: `claude plugin uninstall youtube-digest`
-2. Install the new one: `claude plugin install yt-study@jh-claude-plugins`
-3. Update your MEMORY.md: rename `## YouTube Digest Settings` to `## YT Study Settings`
+1. Uninstall the legacy plugin: `claude plugin uninstall youtube-digest`
+2. Install the new plugin: `claude plugin install yt-study@jh-claude-plugins`
+3. Update your MEMORY.md config heading: `## YouTube Digest Settings` -> `## YT Study Settings`
+4. Verify migration: run `claude plugin list` and confirm only `yt-study@jh-claude-plugins` is active.
 
 ## Prerequisites
 

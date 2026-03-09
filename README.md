@@ -31,6 +31,18 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
    claude plugin install yt-study@jh-claude-plugins
    ```
 
+## Migration from Legacy Plugin Names
+
+To avoid plugin name collisions, legacy names were renamed:
+
+- `blog-digest` -> `article-study`
+- `youtube-digest` -> `yt-study`
+
+For uninstall/reinstall/config update steps, see:
+
+- [article-study migration guide](plugins/article-study/README.md#migrating-from-blog-digest)
+- [yt-study migration guide](plugins/yt-study/README.md#migrating-from-youtube-digest)
+
 ## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

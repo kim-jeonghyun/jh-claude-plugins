@@ -14,11 +14,12 @@ claude plugin install article-study@jh-claude-plugins
 
 ### Migrating from blog-digest
 
-If you previously used `blog-digest`:
+If you previously used the legacy `blog-digest` plugin name:
 
-1. Uninstall the old plugin: `claude plugin uninstall blog-digest`
-2. Install the new one: `claude plugin install article-study@jh-claude-plugins`
-3. Update your MEMORY.md: rename `## Blog Digest Settings` to `## Article Study Settings`
+1. Uninstall the legacy plugin: `claude plugin uninstall blog-digest`
+2. Install the new plugin: `claude plugin install article-study@jh-claude-plugins`
+3. Update your MEMORY.md config heading: `## Blog Digest Settings` -> `## Article Study Settings`
+4. Verify migration: run `claude plugin list` and confirm only `article-study@jh-claude-plugins` is active.
 
 ## Usage
 

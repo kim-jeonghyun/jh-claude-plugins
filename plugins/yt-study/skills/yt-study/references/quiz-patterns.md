@@ -1,6 +1,6 @@
 # Quiz Patterns
 
-3-level quiz guide for video digest comprehension testing.
+3-level quiz guide for video study note comprehension testing.
 
 ## Question Types by Level
 

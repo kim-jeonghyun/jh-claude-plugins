@@ -22,7 +22,7 @@ Cap: max 3 page fetches.
 
 ### 3. Extend Original Document
 
-Append `## Deep Research` section to the original video digest file:
+Append `## Deep Research` section to the original video study note file:
 
 ~~~
 ## Deep Research

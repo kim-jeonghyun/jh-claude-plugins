@@ -27,10 +27,10 @@ Search for `## Article Study Settings` in this order:
    - Options: "Current project (article-notes/)" / "Custom path" / "Obsidian vault" / "Notion"
    - If custom/Obsidian: ask for absolute path
    - If Notion: set `save_target: notion` (no file path needed)
-2. AskUserQuestion: "What categories do you want for organizing digests?"
+2. AskUserQuestion: "What categories do you want for organizing article study notes?"
    - Offer text input for comma-separated category names
    - Example: "tech, business, investing, science, opinion"
-3. AskUserQuestion: "What language should digests be written in?"
+3. AskUserQuestion: "What language should study notes be written in?"
    - Options: "한국어 (Korean)" / "English" / "日本語 (Japanese)" / "Other (specify)"
    - If "Other": ask for language name
 4. AskUserQuestion: "Apply this setting to all projects, or this project only?"

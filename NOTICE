@@ -4,4 +4,14 @@ yt-study (formerly youtube-digest) is a fork of youtube-digest from team-attenti
 Copyright (c) 2025 Team Attention
 Licensed under the MIT License.
 See plugins/yt-study/LICENSE.original for the full license text.
-Original source: team-attention/claude-plugins (repository no longer publicly available)
+Original source: team-attention/claude-plugins
+Original repository status: no longer publicly available (confirmed on 2026-03-09).
+
+Key improvements in yt-study (7):
+1. Adaptive depth analysis (SHORT / MEDIUM / LONG) by video duration.
+2. 2-pass topic segmentation with timestamped parts for 30min+ videos.
+3. Quiz scaling by duration (9-15 questions).
+4. SRT subtitle extraction for improved reliability (instead of json3 parsing).
+5. Obsidian and Notion output integration.
+6. Multi-language output configuration.
+7. Optional Deep Research follow-up workflow.
