@@ -88,7 +88,9 @@ YourVault/
 
 ## Notion Integration (Optional)
 
-For direct Notion save (instead of copy-paste), set up the official Notion MCP server:
+Two options for saving to Notion:
+
+**Option A: Direct save via MCP (recommended)**
 
 1. Create a Notion Integration at https://www.notion.so/profile/integrations
    - Enable: Read content, Insert content, Update content
@@ -102,9 +104,11 @@ For direct Notion save (instead of copy-paste), set up the official Notion MCP s
    # When prompted, enter your NOTION_TOKEN
    ```
 
-4. During first run, choose "Notion (copy-paste)" as save target. The plugin auto-detects the MCP server and saves directly.
+4. During first run, choose **"Notion"** as save target. The plugin auto-detects the MCP server and saves directly.
 
-Without the MCP server, the plugin still works — it generates the document and prompts you to copy-paste into Notion.
+**Option B: Copy-paste (no setup needed)**
+
+If you skip MCP setup, the plugin generates the document and displays it for you to copy-paste into Notion manually.
 
 ## Workflow
 

@@ -2,7 +2,7 @@
 
 YouTube video analysis with adaptive depth based on video length.
 
-Based on [youtube-digest](https://github.com/team-attention/claude-plugins) by Team Attention (MIT License).
+Based on youtube-digest by Team Attention (MIT License). See [LICENSE.original](LICENSE.original) for attribution.
 
 ## Installation
 
@@ -16,18 +16,20 @@ claude plugin install youtube-digest@jh-claude-plugins
 
 ## Prerequisites
 
-yt-dlp is required for metadata and subtitle extraction:
+yt-dlp and python3 are required for metadata and subtitle extraction:
 
 ```bash
 # macOS
-brew install yt-dlp
+brew install yt-dlp python3
 
 # Linux
-pip install yt-dlp
+sudo apt install python3 && pip install yt-dlp
 
-# Windows
-winget install yt-dlp
+# Windows (requires WSL or Git Bash to run shell scripts)
+winget install yt-dlp Python.Python.3
 ```
+
+> **Windows users**: This plugin uses shell scripts (`.sh`). You need [WSL](https://learn.microsoft.com/windows/wsl/install) or [Git Bash](https://gitforwindows.org/) to run them.
 
 ## Usage
 
@@ -105,7 +107,9 @@ YourVault/
 
 ## Notion Integration (Optional)
 
-For direct Notion save (instead of copy-paste), set up the official Notion MCP server:
+Two options for saving to Notion:
+
+**Option A: Direct save via MCP (recommended)**
 
 1. Create a Notion Integration at https://www.notion.so/profile/integrations
    - Enable: Read content, Insert content, Update content
@@ -119,9 +123,11 @@ For direct Notion save (instead of copy-paste), set up the official Notion MCP s
    # When prompted, enter your NOTION_TOKEN
    ```
 
-4. During first run, choose "Notion (copy-paste)" as save target. The plugin auto-detects the MCP server and saves directly.
+4. During first run, choose **"Notion"** as save target. The plugin auto-detects the MCP server and saves directly.
 
-Without the MCP server, the plugin still works — it generates the document and prompts you to copy-paste into Notion.
+**Option B: Copy-paste (no setup needed)**
+
+If you skip MCP setup, the plugin generates the document and displays it for you to copy-paste into Notion manually.
 
 ## Workflow
 

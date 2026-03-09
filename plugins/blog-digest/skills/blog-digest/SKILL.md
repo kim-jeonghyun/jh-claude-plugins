@@ -24,7 +24,7 @@ Search for `## Blog Digest Settings` in this order:
 #### First-Run Setup Wizard
 
 1. AskUserQuestion: "Where should blog digests be saved?"
-   - Options: "Current project (blog-digests/)" / "Custom path" / "Obsidian vault" / "Notion (copy-paste)"
+   - Options: "Current project (blog-digests/)" / "Custom path" / "Obsidian vault" / "Notion"
    - If custom/Obsidian: ask for absolute path
    - If Notion: set `save_target: notion` (no file path needed)
 2. AskUserQuestion: "What categories do you want for organizing digests?"
