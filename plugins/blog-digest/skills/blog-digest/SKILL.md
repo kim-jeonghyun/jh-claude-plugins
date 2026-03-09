@@ -115,10 +115,9 @@ categories:
 ### Applicable Points
 {practical takeaways and how they can be applied}
 
-## Full Text (Korean)
-{Korean blog: restructured original with clear section headers}
-{English blog: full Korean translation with section headers}
-{Other languages: Korean translation}
+## Full Text ({configured language})
+{Same language blog: restructured original with clear section headers}
+{Different language blog: full translation to configured language with section headers}
 ```
 
 ### 4. Category Classification
@@ -127,7 +126,26 @@ Suggest category from the user's configured category list.
 If ambiguous, ask user via AskUserQuestion with their categories as options.
 If no matching category, offer to create a new one (and update MEMORY.md config).
 
-### 5. File Save
+### 5. Save
+
+**If `save_target: notion`:**
+
+Check if Notion MCP tools are available (e.g., `notion_create_page`, `notion_append_block_children`).
+
+*With Notion MCP (recommended):*
+1. Generate the full document as normal
+2. Use Notion MCP to create a new page in the user's configured workspace/database
+3. Report: "Saved to Notion: {page title}" with link if available
+
+*Without Notion MCP (fallback):*
+1. Generate the full document as normal
+2. Display the document content to the user
+3. Inform: "Document ready. Copy the content above and paste into Notion."
+4. Suggest: "For direct Notion integration, install the Notion MCP server. See README for setup instructions."
+
+Skip file write and duplicate check steps below for both cases.
+
+**If file-based save (Obsidian / local / custom path):**
 
 Path: `{configured save path}/{category}/YYYY-MM-DD-{sanitized-title}.md`
 

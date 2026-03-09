@@ -60,7 +60,7 @@ Extract: title, channel, upload_date, duration, duration_seconds, tags, is_live.
 #### Validation
 - If `is_live` is true: "Live stream is still in progress. Please try again after it ends." -> stop.
 - If URL contains `list=` or `playlist`: "Playlist URLs are not supported. Please provide a single video URL." -> stop.
-- If yt-dlp is not installed (command not found): "yt-dlp is required. Install with: brew install yt-dlp (macOS) / pip install yt-dlp (Linux/Windows)" -> stop.
+- If yt-dlp is not installed (command not found): "yt-dlp and python3 are required. Install with: brew install yt-dlp python3 (macOS) / sudo apt install python3 && pip install yt-dlp (Linux) / see README for Windows (WSL required)" -> stop.
 
 ### 1.5. Processing Strategy
 
@@ -211,7 +211,7 @@ After quiz, ask via AskUserQuestion:
 | No subtitles | "Cannot extract subtitles." -> stop |
 | Very low quality subtitles | Use `[unclear]` markers, supplement with web search |
 | Live stream in progress | "Still live. Try after it ends." -> stop |
-| yt-dlp not installed | "Install with: brew install yt-dlp (macOS) / pip install yt-dlp" -> stop |
+| yt-dlp or python3 not installed | "Install with: brew install yt-dlp python3 (macOS) / see README for Linux/Windows" -> stop |
 | Playlist URL | "Playlist URLs not supported. Provide a single video URL." -> stop |
 | Transcript exceeds context | Reduce chunk size (3000 -> 2000 lines) |
 | Save path inaccessible | Error message + suggest alternative path |

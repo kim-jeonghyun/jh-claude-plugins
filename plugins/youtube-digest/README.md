@@ -25,11 +25,13 @@ brew install yt-dlp python3
 # Linux
 sudo apt install python3 && pip install yt-dlp
 
-# Windows (requires WSL or Git Bash to run shell scripts)
-winget install yt-dlp Python.Python.3
+# Windows (WSL recommended)
+# 1. Install WSL: wsl --install
+# 2. Inside WSL terminal:
+sudo apt install python3 && pip install yt-dlp
 ```
 
-> **Windows users**: This plugin uses shell scripts (`.sh`). You need [WSL](https://learn.microsoft.com/windows/wsl/install) or [Git Bash](https://gitforwindows.org/) to run them.
+> **Windows users**: This plugin uses shell scripts (`.sh`). You need [WSL](https://learn.microsoft.com/windows/wsl/install) or [Git Bash](https://gitforwindows.org/) to run them. Install yt-dlp and python3 **inside your WSL/Git Bash environment**, not via winget.
 
 ## Usage
 
