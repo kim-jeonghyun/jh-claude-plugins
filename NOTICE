@@ -1,7 +1,7 @@
 NOTICES AND ATTRIBUTIONS
 
-youtube-digest is based on youtube-digest from team-attention-plugins.
+yt-study (formerly youtube-digest) is a fork of youtube-digest from team-attention-plugins.
 Copyright (c) 2025 Team Attention
 Licensed under the MIT License.
-See plugins/youtube-digest/LICENSE.original for the full license text.
-Original source: team-attention-plugins (repository no longer publicly available)
+See plugins/yt-study/LICENSE.original for the full license text.
+Original source: team-attention/claude-plugins (repository no longer publicly available)

@@ -29,11 +29,11 @@ This project follows the [Contributor Covenant v2.1](CODE_OF_CONDUCT.md). Please
 Conventional commits: `type(scope): message`
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`
-Scope: plugin name (e.g., `blog-digest`) or omit for repo-level changes.
+Scope: plugin name (e.g., `article-study`) or omit for repo-level changes.
 
 Examples:
-- `feat(blog-digest): add quiz patterns reference`
-- `fix(blog-digest): handle paywall fallback`
+- `feat(article-study): add quiz patterns reference`
+- `fix(yt-study): handle paywall fallback`
 - `docs: update root README`
 
 ## Validation & Testing
@@ -41,11 +41,11 @@ Examples:
 ```bash
 # Validate plugin manifests (run from repo root, before push)
 claude plugin validate .
-claude plugin validate ./plugins/blog-digest
+claude plugin validate ./plugins/article-study
 
 # Install locally for testing
 claude plugin marketplace add kim-jeonghyun/jh-claude-plugins
-claude plugin install blog-digest@jh-claude-plugins
+claude plugin install article-study@jh-claude-plugins
 ```
 
 ## Pull Request Process

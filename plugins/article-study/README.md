@@ -1,6 +1,6 @@
-# Blog Digest
+# Article Study
 
-Blog article analysis with summary, insights, Korean translation, and comprehension quizzes.
+Blog and web article study notes with summaries, insights, translation, and comprehension quizzes.
 
 ## Installation
 
@@ -9,8 +9,16 @@ Blog article analysis with summary, insights, Korean translation, and comprehens
 claude plugin marketplace add kim-jeonghyun/jh-claude-plugins
 
 # 2. Install plugin
-claude plugin install blog-digest@jh-claude-plugins
+claude plugin install article-study@jh-claude-plugins
 ```
+
+### Migrating from blog-digest
+
+If you previously used `blog-digest`:
+
+1. Uninstall the old plugin: `claude plugin uninstall blog-digest`
+2. Install the new one: `claude plugin install article-study@jh-claude-plugins`
+3. Update your MEMORY.md: rename `## Blog Digest Settings` to `## Article Study Settings`
 
 ## Usage
 
@@ -18,18 +26,18 @@ claude plugin install blog-digest@jh-claude-plugins
 블로그 정리해줘 https://example.com/article
 ```
 
-Also: "blog digest", "블로그 요약", or any blog URL.
+Also: "article study", "블로그 요약", or any blog/article URL.
 
 ## First Run
 
 On first use, the plugin asks you to configure:
-1. **Save path** — where to save digest files
-   - `blog-digests/` in current project (default)
+1. **Save path** — where to save study notes
+   - `article-notes/` in current project (default)
    - Custom absolute path
    - Obsidian vault (see [Obsidian Integration](#obsidian-integration-optional) below)
    - Notion (see [Notion Integration](#notion-integration-optional) below)
-2. **Categories** — folder categories for organizing digests (e.g., `tech, business, investing`)
-3. **Language** — output language for digests (Korean, English, Japanese, or custom)
+2. **Categories** — folder categories for organizing notes (e.g., `tech, business, investing`)
+3. **Language** — output language (Korean, English, Japanese, or custom)
 4. **Scope** — apply settings globally (all projects) or to the current project only
 
 Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMORY.md`).
@@ -46,7 +54,7 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 
 ## Obsidian Integration (Optional)
 
-To save digests directly into your Obsidian vault:
+To save study notes directly into your Obsidian vault:
 
 1. During first run, choose **"Obsidian vault"** as save path
 2. Enter the absolute path to your vault folder:
@@ -76,7 +84,7 @@ To save digests directly into your Obsidian vault:
    > **Tip**: Not sure where your vault is? Open Obsidian → Settings → Files and links → check "Vault path" at the top.
 3. Set up your categories (these become subfolders in the vault)
 
-Digests are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
+Study notes are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
 
 ```
 YourVault/

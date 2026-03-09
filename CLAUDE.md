@@ -34,8 +34,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guide, commit conventions
 
 | Plugin | Path | Status |
 |--------|------|--------|
-| blog-digest | `plugins/blog-digest/` | v0.1.0 |
-| youtube-digest | `plugins/youtube-digest/` | v1.0.0 |
+| article-study | `plugins/article-study/` | v0.2.0 |
+| yt-study | `plugins/yt-study/` | v1.1.0 |
 
 ## Gotchas
 

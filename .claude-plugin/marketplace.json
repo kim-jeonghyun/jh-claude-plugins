@@ -7,14 +7,14 @@
   "description": "Claude Code plugins for learning and productivity",
   "plugins": [
     {
-      "name": "blog-digest",
-      "description": "Blog article digest with summaries, insights, Korean translation, and study quizzes",
-      "source": "./plugins/blog-digest"
+      "name": "article-study",
+      "description": "Blog and web article study notes with summaries, insights, translation, and comprehension quizzes",
+      "source": "./plugins/article-study"
     },
     {
-      "name": "youtube-digest",
-      "description": "YouTube video digest with adaptive depth, topic segmentation, and study quizzes",
-      "source": "./plugins/youtube-digest"
+      "name": "yt-study",
+      "description": "YouTube video study notes with adaptive depth, topic segmentation, and comprehension quizzes",
+      "source": "./plugins/yt-study"
     }
   ]
 }

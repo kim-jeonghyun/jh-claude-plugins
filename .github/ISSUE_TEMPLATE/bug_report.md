@@ -7,7 +7,7 @@ labels: bug
 
 ## Plugin
 
-Name and version of the affected plugin (e.g., blog-digest 0.1.0).
+Name and version of the affected plugin (e.g., article-study 0.2.0).
 
 ## Describe the Bug
 

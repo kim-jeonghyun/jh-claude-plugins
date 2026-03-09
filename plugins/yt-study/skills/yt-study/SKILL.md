@@ -1,19 +1,19 @@
 ---
-name: youtube-digest
-description: YouTube video digest with adaptive depth, segmentation, and study quizzes.
+name: yt-study
+description: YouTube video study notes with adaptive depth, segmentation, and quizzes.
 ---
 
-# YouTube Digest v2
+# YT Study
 
-YouTube video analysis with adaptive depth based on video length.
+YouTube video study notes with adaptive depth based on video length.
 
-**Trigger Phrase**: "유튜브 정리해줘 [URL]" or "YouTube digest", "영상 요약", "transcript 번역", "영상 퀴즈", or any YouTube URL.
+**Trigger Phrase**: "유튜브 정리해줘 [URL]" or "YouTube study", "영상 요약", "transcript 번역", "영상 퀴즈", or any YouTube URL.
 
 ## Workflow
 
 ### 0. Configuration Check (MANDATORY — do NOT skip or assume defaults)
 
-Search for `## YouTube Digest Settings` in this order:
+Search for `## YT Study Settings` in this order:
 1. **Project MEMORY.md** — the auto-memory file for the current project
 2. **Global MEMORY.md** — `~/.claude/memory/MEMORY.md` (shared across all projects)
 
@@ -23,8 +23,8 @@ Search for `## YouTube Digest Settings` in this order:
 
 #### First-Run Setup Wizard
 
-1. AskUserQuestion: "Where should video digests be saved?"
-   - Options: "Current project (video-digests/)" / "Custom path" / "Obsidian vault" / "Notion"
+1. AskUserQuestion: "Where should video study notes be saved?"
+   - Options: "Current project (video-notes/)" / "Custom path" / "Obsidian vault" / "Notion"
    - If custom/Obsidian: ask for absolute path
    - If Notion: set `save_target: notion` (no file path needed)
 2. AskUserQuestion: "What categories do you want for organizing digests?"
@@ -35,12 +35,12 @@ Search for `## YouTube Digest Settings` in this order:
    - If "Other": ask for language name
 4. AskUserQuestion: "Apply this setting to all projects, or this project only?"
    - Options: "All projects (global)" / "This project only"
-5. Save config to the chosen MEMORY.md under `## YouTube Digest Settings`:
+5. Save config to the chosen MEMORY.md under `## YT Study Settings`:
    - Global: `~/.claude/memory/MEMORY.md`
    - Project only: the current project's auto-memory MEMORY.md
 
 ```
-## YouTube Digest Settings
+## YT Study Settings
 - **Save path**: {chosen path}
 - **Save target**: file | notion
 - **Language**: {language code: ko, en, ja, etc.}

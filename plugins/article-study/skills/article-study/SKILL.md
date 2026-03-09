@@ -1,19 +1,19 @@
 ---
-name: blog-digest
-description: Digest a blog article into a structured study document with comprehension quizzes.
+name: article-study
+description: Blog/web article study notes with summaries, insights, and comprehension quizzes.
 ---
 
-# Blog Digest
+# Article Study
 
-Blog article -> structured study document -> comprehension quiz.
+Blog/web article -> structured study notes -> comprehension quiz.
 
-**Trigger Phrase**: "Digest this blog article: [URL]" or simply ask to summarize/study a blog post URL.
+**Trigger Phrase**: "블로그 정리해줘 [URL]" or "article study", "블로그 요약", or any blog/article URL.
 
 ## Workflow
 
 ### 0. Configuration Check (MANDATORY — do NOT skip or assume defaults)
 
-Search for `## Blog Digest Settings` in this order:
+Search for `## Article Study Settings` in this order:
 1. **Project MEMORY.md** — the auto-memory file for the current project
 2. **Global MEMORY.md** — `~/.claude/memory/MEMORY.md` (shared across all projects)
 
@@ -23,8 +23,8 @@ Search for `## Blog Digest Settings` in this order:
 
 #### First-Run Setup Wizard
 
-1. AskUserQuestion: "Where should blog digests be saved?"
-   - Options: "Current project (blog-digests/)" / "Custom path" / "Obsidian vault" / "Notion"
+1. AskUserQuestion: "Where should article study notes be saved?"
+   - Options: "Current project (article-notes/)" / "Custom path" / "Obsidian vault" / "Notion"
    - If custom/Obsidian: ask for absolute path
    - If Notion: set `save_target: notion` (no file path needed)
 2. AskUserQuestion: "What categories do you want for organizing digests?"
@@ -35,12 +35,12 @@ Search for `## Blog Digest Settings` in this order:
    - If "Other": ask for language name
 4. AskUserQuestion: "Apply this setting to all projects, or this project only?"
    - Options: "All projects (global)" / "This project only"
-5. Save config to the chosen MEMORY.md under `## Blog Digest Settings`:
+5. Save config to the chosen MEMORY.md under `## Article Study Settings`:
    - Global: `~/.claude/memory/MEMORY.md`
    - Project only: the current project's auto-memory MEMORY.md
 
 ```
-## Blog Digest Settings
+## Article Study Settings
 - **Save path**: {chosen path}
 - **Save target**: file | notion
 - **Language**: {language code: ko, en, ja, etc.}

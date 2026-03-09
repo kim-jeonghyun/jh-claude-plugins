@@ -1,8 +1,24 @@
-# YouTube Digest
+# YT Study
 
-YouTube video analysis with adaptive depth based on video length.
+YouTube video study notes with adaptive depth based on video length.
 
-Based on youtube-digest by Team Attention (MIT License). See [LICENSE.original](LICENSE.original) for attribution.
+## Attribution
+
+This plugin is a fork of **youtube-digest** by [Team Attention](https://github.com/team-attention) (MIT License).
+
+The original plugin provided YouTube video summarization for Claude Code. This fork was built on that foundation and adds:
+
+- **Adaptive depth analysis** — SHORT / MEDIUM / LONG presets based on video duration
+- **2-pass topic segmentation** — auto-detected topic boundaries with timestamps for 30min+ videos
+- **Comprehension quizzes** — 3-level study quizzes scaled by video length (9-15 questions)
+- **SRT subtitle extraction** — more reliable format (avoids upstream json3 parsing issues)
+- **Obsidian / Notion integration** — direct save to note-taking platforms
+- **Multi-language support** — configurable output language (Korean, English, Japanese, etc.)
+- **Deep Research follow-up** — optional web deep-dive after quiz
+
+See [LICENSE.original](LICENSE.original) for the original MIT license text.
+
+> **Note**: The original repository (`team-attention/claude-plugins`) is no longer publicly available.
 
 ## Installation
 
@@ -11,8 +27,16 @@ Based on youtube-digest by Team Attention (MIT License). See [LICENSE.original](
 claude plugin marketplace add kim-jeonghyun/jh-claude-plugins
 
 # 2. Install plugin
-claude plugin install youtube-digest@jh-claude-plugins
+claude plugin install yt-study@jh-claude-plugins
 ```
+
+### Migrating from youtube-digest
+
+If you previously used `youtube-digest` (from either team-attention or this repo):
+
+1. Uninstall the old plugin: `claude plugin uninstall youtube-digest`
+2. Install the new one: `claude plugin install yt-study@jh-claude-plugins`
+3. Update your MEMORY.md: rename `## YouTube Digest Settings` to `## YT Study Settings`
 
 ## Prerequisites
 
@@ -39,18 +63,18 @@ sudo apt install python3 && pip install yt-dlp
 유튜브 정리해줘 https://www.youtube.com/watch?v=xxxxx
 ```
 
-Also: "영상 요약", "transcript 번역", "YouTube digest", "영상 퀴즈"
+Also: "영상 요약", "transcript 번역", "YouTube study", "영상 퀴즈"
 
 ## First Run
 
 On first use, the plugin asks you to configure:
-1. **Save path** — where to save digest files
-   - `video-digests/` in current project (default)
+1. **Save path** — where to save study notes
+   - `video-notes/` in current project (default)
    - Custom absolute path
    - Obsidian vault (see [Obsidian Integration](#obsidian-integration-optional) below)
    - Notion (see [Notion Integration](#notion-integration-optional) below)
-2. **Categories** — folder categories for organizing digests (e.g., `tech, business, investing`)
-3. **Language** — output language for digests (Korean, English, Japanese, or custom)
+2. **Categories** — folder categories for organizing notes (e.g., `tech, business, investing`)
+3. **Language** — output language (Korean, English, Japanese, or custom)
 4. **Scope** — apply settings globally (all projects) or to the current project only
 
 Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMORY.md`).
@@ -67,7 +91,7 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 
 ## Obsidian Integration (Optional)
 
-To save digests directly into your Obsidian vault:
+To save study notes directly into your Obsidian vault:
 
 1. During first run, choose **"Obsidian vault"** as save path
 2. Enter the absolute path to your vault folder:
@@ -97,7 +121,7 @@ To save digests directly into your Obsidian vault:
    > **Tip**: Not sure where your vault is? Open Obsidian → Settings → Files and links → check "Vault path" at the top.
 3. Set up your categories (these become subfolders in the vault)
 
-Digests are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
+Study notes are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
 
 ```
 YourVault/

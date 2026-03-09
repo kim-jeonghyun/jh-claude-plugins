@@ -12,8 +12,8 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| [blog-digest](plugins/blog-digest/) | Blog article digest with study quizzes | 0.1.0 |
-| [youtube-digest](plugins/youtube-digest/) | YouTube video digest with adaptive depth | 1.0.0 |
+| [article-study](plugins/article-study/) | Blog/web article study notes with comprehension quizzes | 0.2.0 |
+| [yt-study](plugins/yt-study/) | YouTube video study notes with adaptive depth | 1.1.0 |
 
 ## Installation
 
@@ -24,11 +24,11 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
 
 2. Install a plugin:
    ```bash
-   # Blog article digest
-   claude plugin install blog-digest@jh-claude-plugins
+   # Blog/web article study notes
+   claude plugin install article-study@jh-claude-plugins
 
-   # YouTube video digest (requires yt-dlp)
-   claude plugin install youtube-digest@jh-claude-plugins
+   # YouTube video study notes (requires yt-dlp)
+   claude plugin install yt-study@jh-claude-plugins
    ```
 
 ## Contributing
@@ -38,6 +38,8 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+The [yt-study](plugins/yt-study/) plugin is a fork of youtube-digest by Team Attention (MIT License). See [NOTICE](NOTICE) for attribution details.
 
 ## Author
 

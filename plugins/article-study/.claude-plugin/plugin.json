@@ -1,0 +1,12 @@
+{
+  "name": "article-study",
+  "version": "0.2.0",
+  "description": "Blog and web article study notes with summaries, insights, translation, and comprehension quizzes",
+  "author": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kim-jeonghyun/jh-claude-plugins",
+  "keywords": ["blog", "article", "summarizer", "study", "quiz", "notes"]
+}

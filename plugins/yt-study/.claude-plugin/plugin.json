@@ -1,0 +1,12 @@
+{
+  "name": "yt-study",
+  "version": "1.1.0",
+  "description": "YouTube video study notes with adaptive depth, topic segmentation, and comprehension quizzes",
+  "author": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kim-jeonghyun/jh-claude-plugins",
+  "keywords": ["youtube", "video", "summarizer", "study", "quiz", "notes", "transcript"]
+}
