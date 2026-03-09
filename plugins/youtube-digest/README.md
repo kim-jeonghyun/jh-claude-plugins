@@ -46,7 +46,8 @@ On first use, the plugin asks you to configure:
    - Obsidian vault (see [Obsidian Integration](#obsidian-integration-optional) below)
    - Notion (see [Notion Integration](#notion-integration-optional) below)
 2. **Categories** — folder categories for organizing digests (e.g., `tech, business, investing`)
-3. **Scope** — apply settings globally (all projects) or to the current project only
+3. **Language** — output language for digests (Korean, English, Japanese, or custom)
+4. **Scope** — apply settings globally (all projects) or to the current project only
 
 Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMORY.md`).
 
@@ -55,7 +56,7 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 - **Adaptive depth**: SHORT (<30min) / MEDIUM (30min-2h) / LONG (2h+)
 - **Topic segmentation**: 2-pass analysis for 30min+ videos (auto-detected topics with timestamps)
 - **Quiz scaling**: 9-15 questions based on video length
-- **Bug fix**: SRT subtitle format (upstream json3 was broken)
+- **SRT subtitle extraction**: reliable format (avoids upstream json3 issues)
 - **Output flexibility**: Obsidian / Notion / local file save
 - **Subtitle priority**: manual subtitles preferred over auto-generated
 - **Cross-platform**: macOS, Linux, Windows supported

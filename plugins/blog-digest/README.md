@@ -29,7 +29,8 @@ On first use, the plugin asks you to configure:
    - Obsidian vault (see [Obsidian Integration](#obsidian-integration-optional) below)
    - Notion (see [Notion Integration](#notion-integration-optional) below)
 2. **Categories** — folder categories for organizing digests (e.g., `tech, business, investing`)
-3. **Scope** — apply settings globally (all projects) or to the current project only
+3. **Language** — output language for digests (Korean, English, Japanese, or custom)
+4. **Scope** — apply settings globally (all projects) or to the current project only
 
 Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMORY.md`).
 
@@ -37,11 +38,11 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 
 - **No dependencies** — WebFetch-based content extraction, no external tools needed
 - **Structured summary** with key points and insights
-- **Full Korean translation** for English articles
+- **Full translation** to your configured language for foreign-language articles
 - **3-level comprehension quiz** (9 questions)
 - **Deep Research** follow-up option
 - **Output flexibility**: Obsidian / Notion / local file save
-- **Configurable** save path and categories
+- **Configurable** save path, language, and categories
 
 ## Obsidian Integration (Optional)
 
