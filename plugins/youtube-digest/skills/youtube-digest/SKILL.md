@@ -30,9 +30,12 @@ Search for `## YouTube Digest Settings` in this order:
 2. AskUserQuestion: "What categories do you want for organizing digests?"
    - Offer text input for comma-separated category names
    - Example: "tech, business, investing, science, opinion"
-3. AskUserQuestion: "Apply this setting to all projects, or this project only?"
+3. AskUserQuestion: "What language should digests be written in?"
+   - Options: "한국어 (Korean)" / "English" / "日本語 (Japanese)" / "Other (specify)"
+   - If "Other": ask for language name
+4. AskUserQuestion: "Apply this setting to all projects, or this project only?"
    - Options: "All projects (global)" / "This project only"
-4. Save config to the chosen MEMORY.md under `## YouTube Digest Settings`:
+5. Save config to the chosen MEMORY.md under `## YouTube Digest Settings`:
    - Global: `~/.claude/memory/MEMORY.md`
    - Project only: the current project's auto-memory MEMORY.md
 
@@ -40,6 +43,7 @@ Search for `## YouTube Digest Settings` in this order:
 ## YouTube Digest Settings
 - **Save path**: {chosen path}
 - **Save target**: file | notion
+- **Language**: {language code: ko, en, ja, etc.}
 - **Categories**: {comma-separated list}
 ```
 
@@ -226,10 +230,11 @@ After quiz, ask via AskUserQuestion:
 
 ## Language Handling
 
-- Korean video: Keep original text, restructure with clear headers
-- English video: Provide full Korean translation
-- Mixed language: Translate non-Korean parts, keep Korean as-is
-- Other languages: Default to Korean translation
+Output language is determined by the user's configured `language` setting from Step 0.
+
+- **Same language as configured output**: Keep original text, restructure with clear headers
+- **Different language**: Translate to configured output language
+- **Mixed language**: Translate non-output-language parts, keep output-language parts as-is
 
 ## Resources
 
