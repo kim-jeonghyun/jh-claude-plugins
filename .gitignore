@@ -26,6 +26,13 @@ Desktop.ini
 docs/plans/
 research/
 
+# Python
+__pycache__/
+*.pyc
+
+# Superpowers SDD scratch (local ledger/briefs)
+.superpowers/
+
 # Node (if tooling added later)
 node_modules/
 npm-debug.log*
