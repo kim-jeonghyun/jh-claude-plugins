@@ -51,7 +51,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/download_media.py "$WORK/<i
 
 Filename `{handle}_{slug}_{YYYY-MM-DD}.{ext}` (slug from the title) under the download path. On collision ask: overwrite / suffix / skip.
 
-- **md**: write markdown per `references/schema.md` (merge title/alt/tags from enrichment); copy `$WORK/images/` next to it.
+- **md**: write markdown per `references/schema.md` (merge title/alt/tags from enrichment); copy `$WORK/images/` next to it. For each media item in order: downloaded photos → `![alt](images/file)`; videos/GIFs or failed-download photos → `[media not embedded — view original](url)` (same as the EPUB — never silently drop a figure).
 - **epub**:
   ```
   python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_epub.py "$WORK/<id>.json" "<download>/<name>.epub" --enrichment "$WORK/enrichment.json" --img-dir "$WORK"

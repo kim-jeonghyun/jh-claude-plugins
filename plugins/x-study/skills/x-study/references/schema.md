@@ -35,7 +35,12 @@ tags: [{tags}]   # {tags} from enrichment.json — do NOT read from canonical JS
 
 {faithful paragraphs}
 
+<!-- For EACH media item, in order:
+     - has local_path (downloaded photo): ![{enrichment.alt_texts[local_path]}](local_path)
+     - else (video/GIF, or a photo whose download failed): [media not embedded — view original](url)
+     This mirrors build_epub.py so md/pdf never silently drop a figure. -->
 ![{enrichment.alt_texts[local_path]}](images/{file})
+[media not embedded — view original]({media url})
 
 ---
 Source: {source_url} · captured {captured_at} · via {provider}
