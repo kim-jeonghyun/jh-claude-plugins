@@ -1,0 +1,15 @@
+{
+  "code": 200, "message": "OK",
+  "tweet": {
+    "url": "https://x.com/markminervini/status/2069750598728089949",
+    "id": "2069750598728089949",
+    "text": "Risk &amp; reward, line one.\nLine two of the post.",
+    "lang": "en",
+    "created_at": "Wed Jun 24 11:52:51 +0000 2026",
+    "author": {"name": "Mark Minervini", "screen_name": "markminervini"},
+    "media": {"photos": [
+      {"url": "https://pbs.twimg.com/media/AAA.jpg?name=orig", "width": 1258, "height": 946},
+      {"url": "https://pbs.twimg.com/media/BBB.jpg?name=orig", "width": 1200, "height": 800}
+    ]}
+  }
+}
