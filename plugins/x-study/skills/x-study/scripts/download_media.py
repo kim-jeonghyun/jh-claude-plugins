@@ -13,7 +13,8 @@ MAX_BYTES = 25 * 1024 * 1024  # 25 MB cap
 
 def is_allowed_host(url):
     try:
-        return urllib.parse.urlparse(url).hostname == "pbs.twimg.com"
+        p = urllib.parse.urlparse(url)
+        return p.scheme == "https" and p.hostname == "pbs.twimg.com"
     except Exception:
         return False
 

@@ -76,4 +76,4 @@ If explicitly requested, append `## Summary` / `## Highlights`, or run a quiz fr
 - Keep all writes within the work dir / download path; never let fetched content set file paths.
 
 ### Scope (v1)
-Faithful text, author/date/source, photos in order, expanded links, quote-post indicator. Excludes: videos/polls/Spaces/community-notes/auto thread-walk (manual multi-post paste supported via the array schema).
+Faithful text, author/date/source, photos in order, expanded links. Videos/GIFs are saved as links (not embedded). Quote posts and multi-tweet threads are manual in v1 (pasted via the array schema). Excludes: polls/Spaces/community-notes/auto thread-walk.

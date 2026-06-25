@@ -8,6 +8,7 @@ Failure: prints {"error": "..."} to stderr, exit 2 (caller falls back to
 structured manual paste at the SKILL.md level).
 """
 import argparse, html, json, os, re, sys, urllib.request
+from datetime import datetime, timezone
 
 USER_AGENT = "Mozilla/5.0 (x-study)"
 URL_RE = re.compile(r"https?://(?:www\.)?(?:x|twitter)\.com/([A-Za-z0-9_]+)/status/(\d+)")
@@ -21,14 +22,31 @@ def parse_url(url):
     return m.group(1), m.group(2)
 
 def looks_truncated(text):
+    # Fail-safe: only the ellipsis CHARACTER (…) or an explicit "Show more"
+    # indicates truncation. Bare three dots ("...") are common in normal prose
+    # and would false-positive, needlessly forcing a manual paste.
     t = (text or "").rstrip()
-    return t.endswith("…") or t.endswith("...") or "Show more" in t
+    return t.endswith("…") or "Show more" in t
 
 def normalize_fxlike(raw_text, handle, tweet_id):
     data = json.loads(raw_text)
     t = data.get("tweet") or {}
     author = t.get("author") or {}
-    photos = ((t.get("media") or {}).get("photos")) or []
+    media_obj = t.get("media") or {}
+    # Capture ALL media (photos AND videos/GIFs). fxtwitter exposes the full
+    # list under media.all; fall back to media.photos (all typed "photo").
+    if media_obj.get("all"):
+        media = [
+            {"type": item.get("type") or "photo", "url": item.get("url"),
+             "local_path": None, "width": item.get("width"), "height": item.get("height")}
+            for item in media_obj["all"] if item.get("url")
+        ]
+    else:
+        media = [
+            {"type": "photo", "url": p.get("url"), "local_path": None,
+             "width": p.get("width"), "height": p.get("height")}
+            for p in (media_obj.get("photos") or []) if p.get("url")
+        ]
     return {
         "source_url": t.get("url") or f"https://x.com/{handle}/status/{tweet_id}",
         "tweet_id": tweet_id,
@@ -38,11 +56,7 @@ def normalize_fxlike(raw_text, handle, tweet_id):
         "lang": t.get("lang") or "en",
         "text": html.unescape(t.get("text") or ""),
         "expanded_urls": [],
-        "media": [
-            {"type": "photo", "url": p.get("url"), "local_path": None,
-             "width": p.get("width"), "height": p.get("height")}
-            for p in photos if p.get("url")
-        ],
+        "media": media,
         "quote_post": None,
         "thread_items": [],
         "provider": None,
@@ -55,7 +69,10 @@ def normalize_fxlike(raw_text, handle, tweet_id):
 def _http_get(url, timeout=20):
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read().decode("utf-8", "replace")
+        # Strict decode: invalid bytes raise UnicodeDecodeError rather than
+        # silently producing mojibake. The provider loop catches it, falls
+        # through to the next mirror, and ultimately to the manual-paste path.
+        return r.read().decode("utf-8")
 
 def fetch(url, raw_dir=None):
     handle, tweet_id = parse_url(url)
@@ -75,6 +92,7 @@ def fetch(url, raw_dir=None):
             if canon["truncated"]:
                 last_err = f"{name}: text looks truncated"
                 continue
+            canon["captured_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
             return canon
         except Exception as e:  # noqa: BLE001 - any provider failure -> next
             last_err = f"{name}: {e}"

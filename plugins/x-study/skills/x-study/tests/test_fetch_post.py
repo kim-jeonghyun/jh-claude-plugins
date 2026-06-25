@@ -1,4 +1,4 @@
-import os, sys, unittest
+import json, os, sys, unittest
 HERE = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(HERE, "..", "scripts"))
 import fetch_post  # noqa: E402
@@ -30,6 +30,40 @@ class TestNormalize(unittest.TestCase):
         self.assertTrue(fetch_post.looks_truncated("blah… Show more"))
         self.assertTrue(fetch_post.looks_truncated("ends with ellipsis…"))
         self.assertFalse(fetch_post.looks_truncated("complete sentence."))
+        # ellipsis CHARACTER and "Show more" trigger; bare three dots do not
+        self.assertFalse(fetch_post.looks_truncated("normal prose ..."))
+        self.assertTrue(fetch_post.looks_truncated("text…"))
+        self.assertTrue(fetch_post.looks_truncated("x Show more"))
+
+    def test_media_all_videos_and_gifs(self):
+        raw = json.dumps({
+            "code": 200, "message": "OK",
+            "tweet": {
+                "url": "https://x.com/foo/status/1", "id": "1",
+                "text": "post", "lang": "en",
+                "created_at": "Wed Jun 24 11:52:51 +0000 2026",
+                "author": {"name": "Foo", "screen_name": "foo"},
+                "media": {"all": [
+                    {"type": "photo", "url": "https://pbs.twimg.com/media/P.jpg", "width": 100, "height": 50},
+                    {"type": "video", "url": "https://video.twimg.com/v.mp4", "width": 640, "height": 360},
+                ]},
+            },
+        })
+        c = fetch_post.normalize_fxlike(raw, "foo", "1")
+        self.assertEqual(len(c["media"]), 2)
+        photo = c["media"][0]
+        self.assertEqual(photo["type"], "photo")
+        self.assertEqual(photo["url"], "https://pbs.twimg.com/media/P.jpg")
+        video = c["media"][1]
+        self.assertEqual(video["type"], "video")
+        self.assertEqual(video["url"], "https://video.twimg.com/v.mp4")
+        self.assertIsNone(video["local_path"])
+
+    def test_media_photos_fallback_when_no_all(self):
+        c = fetch_post.normalize_fxlike(self.raw, "markminervini", "2069750598728089949")
+        self.assertEqual(len(c["media"]), 2)
+        self.assertEqual(c["media"][0]["type"], "photo")  # fallback yields photos
+        self.assertEqual(c["media"][0]["url"], "https://pbs.twimg.com/media/AAA.jpg?name=orig")
 
 import tempfile  # noqa: E402
 from unittest import mock  # noqa: E402
@@ -70,6 +104,22 @@ class TestChain(unittest.TestCase):
         with mock.patch.object(fetch_post, "_http_get", mock.Mock(side_effect=RuntimeError("x"))):
             with self.assertRaises(RuntimeError):
                 fetch_post.fetch("https://x.com/a/status/1")
+
+    def test_captured_at_set_on_fetch(self):
+        with mock.patch.object(fetch_post, "_http_get", lambda u, timeout=20: self.good):
+            c = fetch_post.fetch("https://x.com/markminervini/status/2069750598728089949")
+        self.assertIsNotNone(c["captured_at"])
+        self.assertIsInstance(c["captured_at"], str)
+        self.assertTrue(c["captured_at"].endswith("Z"))
+
+    def test_http_get_strict_decode_raises_on_invalid_bytes(self):
+        class FakeResp:
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+            def read(self): return b"\xff\xfe"
+        with mock.patch.object(fetch_post.urllib.request, "urlopen", lambda *a, **k: FakeResp()):
+            with self.assertRaises(UnicodeDecodeError):
+                fetch_post._http_get("https://api.fxtwitter.com/x/status/1")
 
 if __name__ == "__main__":
     unittest.main()

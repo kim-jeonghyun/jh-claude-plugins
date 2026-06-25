@@ -61,5 +61,37 @@ class TestBuild(unittest.TestCase):
             with zipfile.ZipFile(out) as z:
                 self.assertIn("Mark Minervini", z.read("OEBPS/content.opf").decode("utf-8"))
 
+    def test_fallback_link_for_non_embedded_media(self):
+        canon = base_canon()
+        canon["media"] = [
+            {"type": "video", "url": "https://video.twimg.com/v.mp4", "local_path": None},
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "out.epub")
+            build_epub.build(canon, out, img_dir=d, enrichment=None)
+            with zipfile.ZipFile(out) as z:
+                ch = z.read("OEBPS/chapter1.xhtml").decode("utf-8")
+                self.assertIn('<a href="https://video.twimg.com/v.mp4"', ch)
+                self.assertIn("media not embedded", ch)
+
+    def test_dcterms_modified_from_posted_at(self):
+        canon = base_canon()  # posted_at = "Wed Jun 24 11:52:51 +0000 2026"
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "out.epub")
+            build_epub.build(canon, out, img_dir=d, enrichment=None)
+            with zipfile.ZipFile(out) as z:
+                opf = z.read("OEBPS/content.opf").decode("utf-8")
+                self.assertIn("2026-06-24", opf)
+                self.assertIn('property="dcterms:modified">2026-06-24T11:52:51Z', opf)
+
+    def test_dcterms_modified_fallback_when_unparseable(self):
+        canon = base_canon(); canon["posted_at"] = None
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "out.epub")
+            build_epub.build(canon, out, img_dir=d, enrichment=None)
+            with zipfile.ZipFile(out) as z:
+                opf = z.read("OEBPS/content.opf").decode("utf-8")
+                self.assertIn("2026-01-01T00:00:00Z", opf)
+
 if __name__ == "__main__":
     unittest.main()

@@ -9,6 +9,10 @@ class TestDownload(unittest.TestCase):
         self.assertTrue(download_media.is_allowed_host("https://pbs.twimg.com/media/A.jpg?name=orig"))
         self.assertFalse(download_media.is_allowed_host("https://evil.example.com/a.jpg"))
 
+    def test_host_allowlist_requires_https(self):
+        self.assertFalse(download_media.is_allowed_host("http://pbs.twimg.com/a.jpg"))
+        self.assertTrue(download_media.is_allowed_host("https://pbs.twimg.com/a.jpg"))
+
     def test_fetch_bytes_rejects_bad_host_without_network(self):
         with self.assertRaises(ValueError):
             download_media._fetch_bytes("https://evil.example.com/a.jpg")

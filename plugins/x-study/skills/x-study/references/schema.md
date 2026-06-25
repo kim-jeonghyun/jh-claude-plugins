@@ -7,7 +7,10 @@ provider, raw_provider_ref, captured_at, truncated, tags[].
 NO title, NO media[].alt — those come from enrichment.json. `tags[]` in canonical JSON is
 emitted as-is by fetch_post.py (empty list); Claude must NOT populate it — enrichment.json
 `tags` is the authoritative source. `thread_items` is an array so multi-post pastes work
-without a schema change.
+without a schema change. `captured_at` is set by fetch_post.py to processing time
+(UTC, `YYYY-MM-DDTHH:MM:SSZ`). `media[]` may include non-photo items (type `video`/`gif`)
+which are preserved as links — only `type: photo` items are downloaded (`local_path` set);
+non-photo items keep `local_path: null` and render as a link to the original.
 
 ## Enrichment JSON (written by Claude)
 ```json

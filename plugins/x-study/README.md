@@ -17,4 +17,6 @@ MEMORY.md `## X Study Settings` (format, download path). `tag` is asked each run
 A SKILL.md orchestrates: `fetch_post.py` (fxtwitter/vxtwitter → canonical JSON; manual-paste fallback), `download_media.py` (photos from pbs.twimg.com), Claude writes an analytical title + descriptive alt text to `enrichment.json`, then `build_epub.py` / `build_pdf.py` render the document.
 
 ## Privacy & limits
-Uses public mirror APIs (fxtwitter/vxtwitter); no login or API key. Personal archiving. Photos are embedded; videos/GIFs are linked. Long-form posts come whole; multi-tweet threads are pasted manually in v1.
+Uses public mirror APIs (fxtwitter/vxtwitter); no login or API key. Personal archiving. Long-form note tweets are captured in full; if a post looks truncated you'll be asked to paste it. Multi-tweet threads are pasted manually in v1. Videos/GIFs are saved as links, not embedded.
+
+Privacy: the public post URL is sent to third-party mirror APIs (fxtwitter/vxtwitter) — no login, but review their terms if that matters.

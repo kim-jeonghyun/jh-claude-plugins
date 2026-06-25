@@ -5,6 +5,7 @@ Usage: python3 build_epub.py <canonical.json> <out.epub> [--enrichment FILE] [--
 mimetype is stored first/uncompressed; other entries deflated.
 """
 import argparse, json, os, re, sys, zipfile
+from email.utils import parsedate_to_datetime
 
 CSS = """body { font-family: Georgia, serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"; margin: 2em; line-height: 1.7; color: #222; }
 h1 { font-size: 1.4em; color: #1a1a2e; border-bottom: 2px solid #ccc; padding-bottom: 0.5em; }
@@ -30,6 +31,22 @@ def slugify(s):
 def default_title(canon):
     return f"{canon.get('author_name') or canon.get('handle')} - X Post"
 
+# EPUB requires a dcterms:modified timestamp. Derive it deterministically from
+# the post's own posted_at (Twitter format, e.g. "Wed Jun 24 11:52:51 +0000
+# 2026"); fall back to a fixed value if missing/unparseable so builds stay
+# reproducible (derived purely from input — no wall-clock).
+DCTERMS_FALLBACK = "2026-01-01T00:00:00Z"
+
+def dcterms_modified(canon):
+    posted = canon.get("posted_at")
+    if posted:
+        try:
+            dt = parsedate_to_datetime(posted)
+            return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        except Exception:  # noqa: BLE001 - unparseable -> deterministic fallback
+            pass
+    return DCTERMS_FALLBACK
+
 def _chapter(canon, title, alts):
     paras = "\n".join(f"    <p>{esc(p)}</p>" for p in split_paragraphs(canon.get("text")))
     figs = []
@@ -37,6 +54,11 @@ def _chapter(canon, title, alts):
         lp = m.get("local_path")
         if lp:
             figs.append(f'    <figure><img src="{esc(lp)}" alt="{esc(alts.get(lp, ""))}"/></figure>')
+        elif m.get("url"):
+            # Non-embedded media (failed photos, videos, GIFs): preserve a
+            # visible link to the original source rather than dropping it.
+            url = m["url"]
+            figs.append(f'    <figure><a href="{esc(url)}">[media not embedded — view original]</a></figure>')
     img_block = f'  <div class="images">\n' + "\n".join(figs) + "\n  </div>\n" if figs else ""
     meta, src = esc(canon.get("posted_at") or ""), esc(canon.get("source_url") or "")
     prov, cap = esc(canon.get("provider") or ""), esc(canon.get("captured_at") or "")
@@ -75,7 +97,7 @@ def _opf(canon, title):
     <dc:language>{esc(canon.get('lang') or 'en')}</dc:language>
     <dc:identifier id="uid">{esc(canon.get('handle'))}-{esc(canon.get('tweet_id'))}</dc:identifier>
     <dc:source>{esc(canon.get('source_url'))}</dc:source>
-    <meta property="dcterms:modified">2026-01-01T00:00:00Z</meta>
+    <meta property="dcterms:modified">{dcterms_modified(canon)}</meta>
   </metadata>
   <manifest>
 {manifest}
