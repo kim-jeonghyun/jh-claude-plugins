@@ -1,0 +1,9 @@
+{
+  "name": "x-study",
+  "version": "0.1.0",
+  "description": "Archive an X (Twitter) post as a faithful md/epub/pdf document with embedded images.",
+  "author": {
+    "name": "kim-jeonghyun",
+    "url": "https://github.com/kim-jeonghyun"
+  }
+}

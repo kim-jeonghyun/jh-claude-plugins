@@ -15,6 +15,11 @@
       "name": "yt-study",
       "description": "YouTube video study notes with adaptive depth, topic segmentation, and comprehension quizzes",
       "source": "./plugins/yt-study"
+    },
+    {
+      "name": "x-study",
+      "description": "Archive an X (Twitter) post as a faithful md/epub/pdf document with embedded images",
+      "source": "./plugins/x-study"
     }
   ]
 }
