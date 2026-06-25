@@ -31,5 +31,45 @@ class TestNormalize(unittest.TestCase):
         self.assertTrue(fetch_post.looks_truncated("ends with ellipsis…"))
         self.assertFalse(fetch_post.looks_truncated("complete sentence."))
 
+import tempfile  # noqa: E402
+from unittest import mock  # noqa: E402
+
+class TestChain(unittest.TestCase):
+    def setUp(self):
+        with open(os.path.join(HERE, "fixtures", "fxtwitter.json")) as f:
+            self.good = f.read()
+
+    def test_fallback_to_vxtwitter_on_error(self):
+        calls = []
+        def fake_get(u, timeout=20):
+            calls.append(u)
+            if "api.fxtwitter.com" in u:
+                raise RuntimeError("boom")
+            return self.good
+        with mock.patch.object(fetch_post, "_http_get", fake_get):
+            c = fetch_post.fetch("https://x.com/markminervini/status/2069750598728089949")
+        self.assertEqual(c["provider"], "vxtwitter")
+        self.assertEqual(len(calls), 2)
+
+    def test_truncated_first_provider_tries_next(self):
+        trunc = self.good.replace("Line two of the post.", "Line two of the… Show more")
+        def fake_get(u, timeout=20):
+            return trunc if "fxtwitter" in u else self.good
+        with mock.patch.object(fetch_post, "_http_get", fake_get):
+            c = fetch_post.fetch("https://x.com/markminervini/status/2069750598728089949")
+        self.assertEqual(c["provider"], "vxtwitter")
+        self.assertFalse(c["truncated"])
+
+    def test_raw_sidecar_written(self):
+        with tempfile.TemporaryDirectory() as d:
+            with mock.patch.object(fetch_post, "_http_get", lambda u, timeout=20: self.good):
+                c = fetch_post.fetch("https://x.com/markminervini/status/2069750598728089949", raw_dir=d)
+            self.assertTrue(os.path.exists(os.path.join(d, c["raw_provider_ref"])))
+
+    def test_all_fail_raises(self):
+        with mock.patch.object(fetch_post, "_http_get", mock.Mock(side_effect=RuntimeError("x"))):
+            with self.assertRaises(RuntimeError):
+                fetch_post.fetch("https://x.com/a/status/1")
+
 if __name__ == "__main__":
     unittest.main()
