@@ -44,14 +44,14 @@ python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/download_media.py "$WORK/<i
 
 - `title`: a concise **analytical** title (e.g. "Mark Minervini - Market Analysis"), not the first line — drives filename + EPUB title.
 - For each photo with `local_path` set, **Read the image file** and write a short **descriptive** alt (e.g. "Bull Markets S&P 500 Chart"), keyed by `local_path`.
-- Shape: `{"title": "...", "alt_texts": {"images/img1.jpg": "..."}}`.
-- `tags`: required — AskUserQuestion (offer recently-used tags); write into the canonical JSON `tags`.
+- Shape: `{"title": "...", "alt_texts": {"images/img1.jpg": "..."}, "tags": ["..."]}`.
+- `tags`: required — AskUserQuestion (offer recently-used tags); write into `enrichment.json` `tags` (NOT the canonical JSON).
 
 ### 4. Render
 
 Filename `{handle}_{slug}_{YYYY-MM-DD}.{ext}` (slug from the title) under the download path. On collision ask: overwrite / suffix / skip.
 
-- **md**: write markdown per `references/schema.md` (merge title/alt from enrichment); copy `$WORK/images/` next to it.
+- **md**: write markdown per `references/schema.md` (merge title/alt/tags from enrichment); copy `$WORK/images/` next to it.
 - **epub**:
   ```
   python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_epub.py "$WORK/<id>.json" "<download>/<name>.epub" --enrichment "$WORK/enrichment.json" --img-dir "$WORK"

@@ -4,12 +4,14 @@
 Fields: source_url, tweet_id, author_name, handle, posted_at, lang, text (HTML-unescaped),
 expanded_urls, media[{type,url,local_path,width,height}], quote_post, thread_items[],
 provider, raw_provider_ref, captured_at, truncated, tags[].
-NO title, NO media[].alt — those come from enrichment.json. `thread_items` is an array so
-multi-post pastes work without a schema change.
+NO title, NO media[].alt — those come from enrichment.json. `tags[]` in canonical JSON is
+emitted as-is by fetch_post.py (empty list); Claude must NOT populate it — enrichment.json
+`tags` is the authoritative source. `thread_items` is an array so multi-post pastes work
+without a schema change.
 
 ## Enrichment JSON (written by Claude)
 ```json
-{ "title": "Author - Topic", "alt_texts": {"images/img1.jpg": "descriptive alt"} }
+{ "title": "Author - Topic", "alt_texts": {"images/img1.jpg": "descriptive alt"}, "tags": ["macro"] }
 ```
 
 ## Markdown output template
@@ -22,7 +24,7 @@ handle: {handle}
 posted_at: {posted_at}
 processed_at: {captured_at}
 type: x-post
-tags: [{tags}]
+tags: [{tags}]   # {tags} from enrichment.json — do NOT read from canonical JSON tags[]
 ---
 
 # {author_name} (@{handle})
