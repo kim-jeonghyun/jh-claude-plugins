@@ -2,7 +2,7 @@ name: Validate Plugin Manifests
 
 on:
   push:
-    branches: [main]
+    branches-ignore: [main]
   pull_request:
     branches: [main]
 
@@ -38,6 +38,28 @@ jobs:
           done
           exit $EXIT_CODE
 
+      - name: Check version-bump requires CHANGELOG update
+        if: github.event_name == 'pull_request'
+        run: |
+          CHANGED_FILES=$(gh pr diff "$PR_NUMBER" --name-only 2>/dev/null || git diff --name-only origin/main...HEAD)
+          VERSION_BUMPED=0
+          for pj in $(echo "$CHANGED_FILES" | grep 'plugin.json$'); do
+            echo "Version file changed: $pj"
+            VERSION_BUMPED=1
+          done
+          if [ "$VERSION_BUMPED" -eq 1 ]; then
+            if ! echo "$CHANGED_FILES" | grep -q 'CHANGELOG.md'; then
+              echo "FAIL: plugin.json version changed but CHANGELOG.md not updated"
+              exit 1
+            fi
+            echo "OK: Version bump has matching CHANGELOG update"
+          else
+            echo "OK: No version bump detected"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
       - name: Check internal markdown links
         run: |
           BROKEN=0
@@ -55,3 +77,15 @@ jobs:
             exit 1
           fi
           echo "All internal links valid."
+
+      - name: Run plugin unit tests
+        run: |
+          echo "Running plugin unit tests..."
+          FOUND=0
+          for t in $(find plugins -path '*/tests/test_*.py' | sort); do
+            FOUND=1
+            echo "== $t =="
+            python3 "$t" || exit 1
+          done
+          if [ "$FOUND" -eq 0 ]; then echo "No plugin tests found."; fi
+          echo "All plugin tests passed."

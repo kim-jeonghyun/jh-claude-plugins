@@ -10,10 +10,13 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
 
 ## Plugins
 
-| Plugin | Description | Version |
-|--------|-------------|---------|
-| [article-study](plugins/article-study/) | Blog/web article study notes with comprehension quizzes | 0.2.0 |
-| [yt-study](plugins/yt-study/) | YouTube video study notes with adaptive depth | 1.1.0 |
+| Plugin | Description |
+|--------|-------------|
+| [article-study](plugins/article-study/) | Blog/web article study notes with comprehension quizzes |
+| [yt-study](plugins/yt-study/) | YouTube video study notes with adaptive depth |
+| [x-study](plugins/x-study/) | Archive an X (Twitter) post as a faithful md/epub/pdf with embedded images |
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Installation
 
@@ -29,6 +32,9 @@ Claude Code plugins for learning and productivity. Each plugin is a pure configu
 
    # YouTube video study notes (requires yt-dlp)
    claude plugin install yt-study@jh-claude-plugins
+
+   # Archive an X (Twitter) post to md/epub/pdf
+   claude plugin install x-study@jh-claude-plugins
    ```
 
 ## Migration from Legacy Plugin Names
