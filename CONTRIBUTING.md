@@ -30,6 +30,7 @@ Conventional commits: `type(scope): message`
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`
 Scope: plugin name (e.g., `article-study`) or omit for repo-level changes.
+Branch names: use `type/short-description` (e.g., `feat/new-quiz-format`, `fix/path-handling`).
 
 Examples:
 - `feat(article-study): add quiz patterns reference`
@@ -50,11 +51,44 @@ claude plugin install article-study@jh-claude-plugins
 
 ## Pull Request Process
 
-1. Fork the repository
-2. Create your changes following the conventions above
-3. Validate plugin manifests locally
-4. Submit a PR using the [PR template](.github/PULL_REQUEST_TEMPLATE.md)
-5. Await maintainer review
+1. Fork the repository (maintainers may create branches directly)
+2. Create a branch: `type/short-description` (e.g., `feat/new-quiz-format`)
+3. Make your changes following the conventions above
+4. Validate plugin manifests locally
+5. Submit a PR using the [PR template](.github/PULL_REQUEST_TEMPLATE.md)
+6. Await maintainer review
+
+All PRs are **squash-merged**. Your PR title becomes the commit message on `main`, so it must follow conventional commit format: `type(scope): message`.
+
+For security vulnerabilities, do not open a public issue — see [SECURITY.md](SECURITY.md).
+
+## Versioning
+
+The maintainer typically handles version bumps and CHANGELOG updates in a dedicated release PR. Contributors should not need to modify `plugin.json` version fields or `CHANGELOG.md` — if you do, CI will require both to change together.
+
+Plugin versions follow [SemVer](https://semver.org/). The **public API surface** for each plugin is:
+- User-facing setup wizard fields (`## Settings` in MEMORY.md)
+- SKILL.md invocation pattern (skill name, required user inputs)
+- Required external tools (e.g., yt-dlp for yt-study)
+- Output format and save behavior
+
+Bump rules:
+- **major**: Breaking change to the API surface above (e.g., setup fields renamed, required tool added)
+- **minor**: New feature or workflow change that does not break existing usage
+- **patch**: Typos, reference doc fixes, bug fixes with no behavior change
+
+## Releasing (Maintainers)
+
+1. After merging contributor PRs, create a version-bump commit:
+   - Update `plugins/<name>/.claude-plugin/plugin.json` version field
+   - Update root `CHANGELOG.md` with new entry (Keep a Changelog format)
+2. Open a PR for the version bump, merge via squash merge
+3. For repo milestones: push a tag (`git tag 2026.03 && git push origin 2026.03`)
+4. GitHub Actions auto-generates a Release from the tag
+
+Repo milestone tags use **date-based format** (`YYYY.MM` or `YYYY.MM.N`), not semver — to avoid confusion with plugin versions. They are internal snapshots, not user-facing version numbers.
+
+**When to tag:** New plugin added, any plugin major version bump, significant infra change, or quarterly milestone (optional).
 
 ## License
 
