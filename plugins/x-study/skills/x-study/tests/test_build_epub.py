@@ -187,5 +187,42 @@ class TestThreadRender(unittest.TestCase):
             import filecmp
             self.assertTrue(filecmp.cmp(a, b, shallow=False), "single-tweet EPUB not deterministic")
 
+class TestEpubSecurityAndDeterminism(unittest.TestCase):
+    def test_javascript_scheme_neutralized_in_hrefs(self):
+        canon = thread_canon()
+        canon["thread_items"][0]["url"] = "javascript:alert(1)"
+        canon["thread_items"][0]["media"] = [{"type": "video", "url": "javascript:alert(2)", "local_path": None}]
+        ch = build_epub._thread_chapter(canon, "t", {})
+        self.assertNotIn('href="javascript:', ch)   # no live javascript: href
+        self.assertIn('href="#"', ch)                # neutralized to an inert anchor
+
+    def test_path_traversal_local_path_not_embedded(self):
+        canon = thread_canon()
+        canon["thread_items"][0]["media"] = [{"type": "photo", "url": "x", "local_path": "../../etc/passwd"}]
+        # unsafe local_path: excluded from manifest, never read/packaged
+        self.assertEqual(build_epub._embedded_images(canon), ["images/img2.jpg"])
+        self.assertNotIn("passwd", build_epub._opf(canon, "t"))
+
+    def test_determinism_pins_zip_metadata(self):
+        canon = base_canon()
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "images"))
+            with open(os.path.join(d, "images", "img1.jpg"), "wb") as f:
+                f.write(b"\xff\xd8\xff\xe0JPEG")
+            out = os.path.join(d, "out.epub")
+            build_epub.build(canon, out, img_dir=d)
+            with zipfile.ZipFile(out) as z:
+                zi = z.getinfo("OEBPS/content.opf")
+                self.assertEqual(zi.date_time, (1980, 1, 1, 12, 1, 0))
+                self.assertEqual(zi.create_system, 3)             # pinned Unix (cross-platform)
+                self.assertEqual(zi.external_attr, 0o644 << 16)   # rw-r--r-- (not 000 on extract)
+
+    def test_tabular_heuristic_avoids_prose_false_positives(self):
+        self.assertFalse(build_epub._looks_tabular("The Fed met today.  Rates held."))  # 1 line, double space
+        self.assertFalse(build_epub._looks_tabular("Buy.  Hold.  Sell."))
+        self.assertTrue(build_epub._looks_tabular("AAPL   201.4\nTSLA   242.0"))          # real 2-line table
+        self.assertTrue(build_epub._looks_tabular("| Ticker | Px |\n| AAPL | 201 |"))     # pipe table
+
+
 if __name__ == "__main__":
     unittest.main()

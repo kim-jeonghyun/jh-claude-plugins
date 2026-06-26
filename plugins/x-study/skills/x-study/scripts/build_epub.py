@@ -12,6 +12,7 @@ uses a fixed ZipInfo date and is written in sorted order with ZIP_STORED (DEFLAT
 output is not stable across zlib versions, which would make committed goldens flaky).
 """
 import argparse, json, os, re, sys, zipfile
+from datetime import datetime
 from email.utils import parsedate_to_datetime
 
 # Fixed DOS timestamp for every entry -> identical bytes on every run/platform.
@@ -22,7 +23,7 @@ h1 { font-size: 1.4em; color: #1a1a2e; border-bottom: 2px solid #ccc; padding-bo
 h2 { font-size: 1.05em; color: #444; margin-top: 1.6em; }
 .meta { color: #666; font-size: 0.9em; margin-bottom: 1.5em; }
 p { margin: 0.8em 0; }
-pre.tabular { white-space: pre-wrap; font-family: "Menlo", "Consolas", monospace; font-size: 0.9em; background: #f6f6f6; padding: 0.6em; overflow-wrap: anywhere; }
+pre.tabular { white-space: pre-wrap; font-family: "Menlo", "Consolas", monospace; font-size: 0.9em; background: #f6f6f6; padding: 0.6em; }
 .images img, figure img { width: 100%; max-width: 100%; height: auto; display: block; margin: 1em 0; border: 1px solid #ddd; }
 figcaption { font-size: 0.8em; color: #888; }
 .completeness-banner { border: 1px solid #d9b310; background: #fff8e1; padding: 0.8em 1em; margin-bottom: 1.5em; font-size: 0.9em; }
@@ -52,6 +53,25 @@ def _media_type(path):
     return {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
             ".gif": "image/gif", ".webp": "image/webp"}.get(ext, "image/jpeg")
 
+def _safe_href(url):
+    # Only web/mail schemes survive into an href; a pasted javascript:/data: link
+    # must not be clickable in the EPUB (esc() blocks attribute breakout, not the
+    # scheme itself). Relative/anchor refs are left as-is.
+    u = str(url or "")
+    low = u.lower()
+    if low.startswith(("http://", "https://", "mailto:", "#")) or (u and ":" not in u.split("/")[0]):
+        return u
+    return "#"
+
+def _is_safe_local(lp):
+    # Embeddable only as a normalized relative path under images/ (no absolute
+    # path, no "..", no drive) — a malicious canonical JSON must not make the
+    # builder read/package files outside the work dir.
+    if not lp or lp.startswith("/"):
+        return False
+    parts = lp.replace("\\", "/").split("/")
+    return parts[0] == "images" and ".." not in parts and ":" not in parts[0]
+
 def _media_owners(canon):
     # Threads: thread_items is authoritative (top-level media ignored). Single
     # tweet: the root owns the media. Mirrors download_media._media_owners.
@@ -62,8 +82,9 @@ def _embedded_images(canon):
     paths = []
     for owner in _media_owners(canon):
         for m in owner.get("media", []):
-            if m.get("local_path"):
-                paths.append(m["local_path"])
+            lp = m.get("local_path")
+            if lp and _is_safe_local(lp):
+                paths.append(lp)
     return paths
 
 # EPUB requires a dcterms:modified timestamp. Derive it deterministically from
@@ -75,9 +96,14 @@ DCTERMS_FALLBACK = "2026-01-01T00:00:00Z"
 def dcterms_modified(canon):
     posted = canon.get("posted_at")
     if posted:
+        # RFC 2822 (Twitter "Wed Jun 24 11:52:51 +0000 2026")...
         try:
-            dt = parsedate_to_datetime(posted)
-            return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+            return parsedate_to_datetime(posted).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except Exception:  # noqa: BLE001
+            pass
+        # ...or ISO-8601 (manual-paste threads may carry "2026-06-24T11:52:51Z")
+        try:
+            return datetime.fromisoformat(posted.replace("Z", "+00:00")).strftime("%Y-%m-%dT%H:%M:%SZ")
         except Exception:  # noqa: BLE001 - unparseable -> deterministic fallback
             pass
     return DCTERMS_FALLBACK
@@ -89,13 +115,12 @@ def _chapter(canon, title, alts):
     figs = []
     for m in canon.get("media", []):
         lp = m.get("local_path")
-        if lp:
+        if lp and _is_safe_local(lp):
             figs.append(f'    <figure><img src="{esc(lp)}" alt="{esc(alts.get(lp, ""))}"/></figure>')
         elif m.get("url"):
             # Non-embedded media (failed photos, videos, GIFs): preserve a
             # visible link to the original source rather than dropping it.
-            url = m["url"]
-            figs.append(f'    <figure><a href="{esc(url)}">[media not embedded — view original]</a></figure>')
+            figs.append(f'    <figure><a href="{esc(_safe_href(m["url"]))}">[media not embedded — view original]</a></figure>')
     img_block = f'  <div class="images">\n' + "\n".join(figs) + "\n  </div>\n" if figs else ""
     meta, src = esc(canon.get("posted_at") or ""), esc(canon.get("source_url") or "")
     prov, cap = esc(canon.get("provider") or ""), esc(canon.get("captured_at") or "")
@@ -117,12 +142,18 @@ def _chapter(canon, title, alts):
 # ---- thread chapter (per-tweet sections) -----------------------------------
 
 def _looks_tabular(block):
-    # A tab, or 2+ spaces between non-space chars (column alignment / ASCII table).
-    # Preserving alignment beats collapsing it: financial tables must survive.
-    for line in block.splitlines():
-        if "\t" in line or re.search(r"\S {2,}\S", line):
-            return True
-    return False
+    # A real table needs the column signal to REPEAT across >=2 lines; a single
+    # line with "two spaces after a period" is prose, not a table. Signals: a tab,
+    # a 2+ space leading indent, a pipe-delimited row, or 2+ spaces between
+    # non-space chars (a column gap). Preserving alignment beats collapsing it:
+    # financial tables must survive.
+    lines = [l for l in block.splitlines() if l.strip()]
+    if len(lines) < 2:
+        return False
+    def sig(l):
+        return ("\t" in l or re.match(r"\s{2,}\S", l) is not None
+                or l.lstrip().startswith("|") or re.search(r"\S {2,}\S", l) is not None)
+    return sum(1 for l in lines if sig(l)) >= 2
 
 def _render_text_blocks(text):
     out = []
@@ -153,26 +184,27 @@ def _tweet_section(item, i, total, alts):
     figs = []
     for m in item.get("media", []):
         lp = m.get("local_path")
-        if lp:
+        if lp and _is_safe_local(lp):
             figs.append(
                 f'    <figure><img src="{esc(lp)}" alt="{esc(alts.get(lp, ""))}"/>'
                 f'<figcaption>From captured tweet {i}</figcaption></figure>'
             )
         elif m.get("url"):
-            figs.append(f'    <figure><a href="{esc(m["url"])}">[media not embedded — view original]</a></figure>')
-    figs_block = ("\n" + "\n".join(figs)) if figs else ""
-    permalink = esc(item.get("url") or "")
+            figs.append(f'    <figure><a href="{esc(_safe_href(m["url"]))}">[media not embedded — view original]</a></figure>')
+    raw_url = item.get("url") or ""
+    permalink, href = esc(raw_url), esc(_safe_href(raw_url))
     posted = esc(item.get("posted_at") or item.get("posted_at_utc") or "")
-    meta = f'<a href="{permalink}">{permalink}</a>' if permalink else ""
+    meta = f'<a href="{href}">{permalink}</a>' if permalink else ""
     if posted:
         meta = (meta + " · " if meta else "") + posted
-    return (
-        f'  <section epub:type="chapter" class="tweet" id="tweet{i}">\n'
-        f'    <h2>Captured tweet {i} of {total}</h2>\n'
-        f'    <div class="tweet-meta">{meta}</div>\n'
-        f'{body}{figs_block}\n'
-        f'  </section>'
-    )
+    inner = [f'    <h2>Captured tweet {i} of {total}</h2>',
+             f'    <div class="tweet-meta">{meta}</div>']
+    if body:
+        inner.append(body)
+    if figs:
+        inner.append("\n".join(figs))
+    return (f'  <section epub:type="chapter" class="tweet" id="tweet{i}">\n'
+            + "\n".join(inner) + "\n  </section>")
 
 def _thread_chapter(canon, title, alts):
     items = canon.get("thread_items") or []
@@ -269,16 +301,23 @@ def build(canon, out_path, img_dir=None, enrichment=None):
         if os.path.exists(src):
             with open(src, "rb") as f:
                 entries[f"OEBPS/{lp}"] = f.read()
+    def _zi(name):
+        # Pin every field that varies by platform so bytes are identical on
+        # macOS/Linux/Windows: fixed date, Unix create_system, and rw-r--r-- perms
+        # (external_attr=0 extracts as 000 -> "permission denied" in some readers).
+        zi = zipfile.ZipInfo(name, date_time=EPUB_EPOCH)
+        zi.create_system = 3
+        zi.external_attr = 0o644 << 16
+        return zi
     with zipfile.ZipFile(out_path, "w") as z:
-        # mimetype: first, stored, fixed date (OCF requirement + reproducibility)
-        z.writestr(zipfile.ZipInfo("mimetype", date_time=EPUB_EPOCH),
-                   "application/epub+zip", compress_type=zipfile.ZIP_STORED)
+        # mimetype first/stored (OCF); all entries STORED + sorted + fixed metadata
+        # -> byte-reproducible across platforms (DEFLATE is not stable across zlib).
+        z.writestr(_zi("mimetype"), "application/epub+zip", compress_type=zipfile.ZIP_STORED)
         for name in sorted(entries):
             data = entries[name]
             if isinstance(data, str):
                 data = data.encode("utf-8")
-            z.writestr(zipfile.ZipInfo(name, date_time=EPUB_EPOCH), data,
-                       compress_type=zipfile.ZIP_STORED)
+            z.writestr(_zi(name), data, compress_type=zipfile.ZIP_STORED)
     return out_path
 
 def main(argv=None):

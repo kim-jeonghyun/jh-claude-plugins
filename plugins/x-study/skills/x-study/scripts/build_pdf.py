@@ -18,10 +18,13 @@ def detect_engine():
     return None
 
 def pandoc_args(md, out, engine):
-    # `-f markdown-tex_math_dollars`: cashtags like "$AAPL ... $TSLA" must NOT be
-    # parsed as LaTeX inline math (which would silently eat the text between them).
+    # Faithful-archive input format:
+    #   -tex_math_dollars : cashtags "$AAPL ... $TSLA" are NOT parsed as LaTeX math
+    #                       (which would silently eat the text between them);
+    #   -smart            : keep ASCII "--", "...", straight quotes verbatim instead
+    #                       of normalizing them to en-dash/ellipsis/curly quotes.
     # absolute paths + `--` so a file named like `--flag.md` cannot be parsed as an option.
-    return ["pandoc", "-f", "markdown-tex_math_dollars", f"--pdf-engine={engine}",
+    return ["pandoc", "-f", "markdown-tex_math_dollars-smart", f"--pdf-engine={engine}",
             "-o", os.path.abspath(out), "--", os.path.abspath(md)]
 
 def build(md_path, out_pdf):

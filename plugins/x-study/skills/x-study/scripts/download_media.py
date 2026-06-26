@@ -57,9 +57,9 @@ def download_all(canon, out_dir):
                 continue  # videos/GIFs referenced as links, not downloaded
             url = m.get("url")
             if not url or not is_allowed_host(url):
-                # off-allowlist / missing: keep as a link, do NOT consume a
-                # counter slot and never fetch (per-item SSRF guard).
-                m["local_path"] = None
+                # off-allowlist / missing url: do not fetch and do not consume a
+                # counter slot. Preserve any pre-existing local_path (a manual-paste
+                # local chart file) — never clobber it. (per-item SSRF guard)
                 continue
             idx += 1
             name = f"img{idx}.jpg"
