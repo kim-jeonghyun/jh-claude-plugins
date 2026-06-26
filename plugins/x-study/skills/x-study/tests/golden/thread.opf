@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title>Quant - Q2 Macro Thread</dc:title>
+    <dc:creator>Quant</dc:creator>
+    <dc:language>en</dc:language>
+    <dc:identifier id="uid">quant-1000</dc:identifier>
+    <dc:source>https://x.com/quant/status/1000</dc:source>
+    <meta property="dcterms:modified">2026-06-24T11:52:51Z</meta>
+    <meta property="dcterms:provenance">manual paste, x-study v0.2</meta>
+    <meta property="dcterms:dateSubmitted">2026-06-26T11:50:00Z</meta>
+  </metadata>
+  <manifest>
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>
+    <item id="css" href="style.css" media-type="text/css"/>
+    <item id="img1" href="images/img1.jpg" media-type="image/jpeg"/>
+    <item id="img2" href="images/img2.jpg" media-type="image/jpeg"/>
+  </manifest>
+  <spine>
+    <itemref idref="nav"/>
+    <itemref idref="chapter1"/>
+  </spine>
+</package>

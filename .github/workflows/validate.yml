@@ -90,3 +90,27 @@ jobs:
           done
           if [ "$FOUND" -eq 0 ]; then echo "No plugin tests found."; fi
           echo "All plugin tests passed."
+
+  epubcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Validate generated EPUBs with epubcheck 5.3.0
+        run: |
+          curl -sL -o epubcheck.zip https://github.com/w3c/epubcheck/releases/download/v5.3.0/epubcheck-5.3.0.zip
+          unzip -oq epubcheck.zip
+          export EPUBCHECK_JAR="$PWD/epubcheck-5.3.0/epubcheck.jar"
+          FOUND=0
+          for t in $(find plugins -path '*/tests/test_epubcheck.py' | sort); do
+            FOUND=1
+            echo "== $t (EPUBCHECK_JAR set) =="
+            python3 "$t" || exit 1
+          done
+          if [ "$FOUND" -eq 0 ]; then echo "No epubcheck tests found."; fi
+          echo "EPUB structural validation passed."

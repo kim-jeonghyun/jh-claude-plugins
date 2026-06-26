@@ -36,26 +36,55 @@ def _fetch_bytes(url, timeout=30):
         raise ValueError("image exceeds size cap")
     return data
 
+def _ext_for(data):
+    # Pick the on-disk extension from the actual bytes, not the URL — pbs.twimg.com
+    # serves png/webp/gif too, and a wrong extension makes the EPUB's media-type
+    # mismatch the content (epubcheck PKG-021 / reader mis-render).
+    if data[:3] == b"\xff\xd8\xff":
+        return ".jpg"
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return ".png"
+    if data[:6] in (b"GIF87a", b"GIF89a"):
+        return ".gif"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return ".webp"
+    return ".jpg"  # unknown -> default; Twitter photos are overwhelmingly jpeg
+
+def _media_owners(canon):
+    """Yield the objects that own a `media` list, in render order.
+
+    Threads: `thread_items` is authoritative — iterate every tweet's media and
+    IGNORE top-level media (it only mirrors the first item). Single tweet
+    (`thread_items` empty/absent): the canonical root owns the media. This keeps
+    the single-tweet path byte-identical to v0.1.
+    """
+    items = canon.get("thread_items")
+    return items if items else [canon]
+
 def download_all(canon, out_dir):
     img_dir = os.path.join(out_dir, "images")
     os.makedirs(img_dir, exist_ok=True)
-    idx = 0
-    for m in canon.get("media", []):
-        if m.get("type", "photo") != "photo":
-            continue  # videos/GIFs referenced as links, not downloaded
-        url = m.get("url")
-        if not url or not is_allowed_host(url):
-            continue
-        idx += 1
-        name = f"img{idx}.jpg"
-        try:
-            data = _fetch_bytes(url)
-            with open(os.path.join(img_dir, name), "wb") as f:
-                f.write(data)
-            m["local_path"] = f"images/{name}"
-        except Exception as e:  # noqa: BLE001 - keep link on failure
-            sys.stderr.write(f"warn: image {idx} failed: {e}\n")
-            m["local_path"] = None
+    idx = 0  # one global counter across the whole thread -> img1..imgN
+    for owner in _media_owners(canon):
+        for m in owner.get("media", []):
+            if m.get("type", "photo") != "photo":
+                continue  # videos/GIFs referenced as links, not downloaded
+            url = m.get("url")
+            if not url or not is_allowed_host(url):
+                # off-allowlist / missing url: do not fetch and do not consume a
+                # counter slot. Preserve any pre-existing local_path (a manual-paste
+                # local chart file) — never clobber it. (per-item SSRF guard)
+                continue
+            idx += 1
+            try:
+                data = _fetch_bytes(url)
+                name = f"img{idx}{_ext_for(data)}"  # extension from the actual bytes
+                with open(os.path.join(img_dir, name), "wb") as f:
+                    f.write(data)
+                m["local_path"] = f"images/{name}"
+            except Exception as e:  # noqa: BLE001 - keep link on failure
+                sys.stderr.write(f"warn: image {idx} failed: {e}\n")
+                m["local_path"] = None
     return canon
 
 def main(argv=None):
