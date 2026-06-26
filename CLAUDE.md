@@ -42,13 +42,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guide, commit conventions
 <!-- /session-wrap:wrap 세션 종료 시 업데이트 -->
 
 ### 진행 중
-- (세션 종료 시 업데이트)
+- 없음 — x-study v0.2.0 (멀티트윗 스레드 아카이빙) main 머지 완료 (2026-06-26, PR #4)
 
 ### 블로커
 - 없음
 
 ### 다음 할 일
-- (세션 종료 시 업데이트)
+- x-study v0.3 후보 (모두 의도적 연기, 문서화됨): ① 인용 트윗 구조적 캡처 ② 단일 트윗 내 ASCII 표 보존(현 플랜의 "단일 트윗 byte-동일" 범위와 충돌) ③ (검토 후) 스레드 자동 수집 대안
 
 ## Gotchas
 
