@@ -36,6 +36,20 @@ def _fetch_bytes(url, timeout=30):
         raise ValueError("image exceeds size cap")
     return data
 
+def _ext_for(data):
+    # Pick the on-disk extension from the actual bytes, not the URL — pbs.twimg.com
+    # serves png/webp/gif too, and a wrong extension makes the EPUB's media-type
+    # mismatch the content (epubcheck PKG-021 / reader mis-render).
+    if data[:3] == b"\xff\xd8\xff":
+        return ".jpg"
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return ".png"
+    if data[:6] in (b"GIF87a", b"GIF89a"):
+        return ".gif"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return ".webp"
+    return ".jpg"  # unknown -> default; Twitter photos are overwhelmingly jpeg
+
 def _media_owners(canon):
     """Yield the objects that own a `media` list, in render order.
 
@@ -62,9 +76,9 @@ def download_all(canon, out_dir):
                 # local chart file) — never clobber it. (per-item SSRF guard)
                 continue
             idx += 1
-            name = f"img{idx}.jpg"
             try:
                 data = _fetch_bytes(url)
+                name = f"img{idx}{_ext_for(data)}"  # extension from the actual bytes
                 with open(os.path.join(img_dir, name), "wb") as f:
                     f.write(data)
                 m["local_path"] = f"images/{name}"

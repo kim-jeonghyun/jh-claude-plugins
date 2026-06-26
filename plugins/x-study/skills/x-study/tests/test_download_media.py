@@ -17,6 +17,21 @@ class TestDownload(unittest.TestCase):
         with self.assertRaises(ValueError):
             download_media._fetch_bytes("https://evil.example.com/a.jpg")
 
+    def test_ext_from_magic_bytes(self):
+        self.assertEqual(download_media._ext_for(b"\xff\xd8\xff\xe0JFIF"), ".jpg")
+        self.assertEqual(download_media._ext_for(b"\x89PNG\r\n\x1a\n...."), ".png")
+        self.assertEqual(download_media._ext_for(b"GIF89a...."), ".gif")
+        self.assertEqual(download_media._ext_for(b"RIFF\x00\x00\x00\x00WEBPVP8 "), ".webp")
+        self.assertEqual(download_media._ext_for(b"unknownbytes"), ".jpg")  # safe default
+
+    def test_png_download_named_png(self):
+        canon = {"media": [{"type": "photo", "url": "https://pbs.twimg.com/media/A.png", "local_path": None}]}
+        with tempfile.TemporaryDirectory() as d:
+            with mock.patch.object(download_media, "_fetch_bytes", lambda u, **k: b"\x89PNG\r\n\x1a\n\x00data"):
+                out = download_media.download_all(canon, d)
+            self.assertEqual(out["media"][0]["local_path"], "images/img1.png")  # extension from bytes
+            self.assertTrue(os.path.exists(os.path.join(d, "images", "img1.png")))
+
     def test_download_photos_only_and_local_path(self):
         canon = {"media": [
             {"type": "photo", "url": "https://pbs.twimg.com/media/A.jpg?name=orig", "local_path": None},
