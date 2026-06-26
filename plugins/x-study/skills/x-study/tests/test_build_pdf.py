@@ -14,6 +14,8 @@ class TestPdf(unittest.TestCase):
         self.assertTrue(args[-1].endswith("in.md"))
         self.assertTrue(os.path.isabs(args[-1]))           # absolute input path
         self.assertGreater(args.index("--"), args.index("-o"))
+        # cashtags ($AAPL ... $TSLA) must not be parsed as LaTeX math
+        self.assertEqual(args[args.index("-f") + 1], "markdown-tex_math_dollars")
 
     def test_build_fails_gracefully_without_pandoc(self):
         with mock.patch.object(build_pdf, "_which", lambda x: None):

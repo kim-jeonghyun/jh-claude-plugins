@@ -36,26 +36,41 @@ def _fetch_bytes(url, timeout=30):
         raise ValueError("image exceeds size cap")
     return data
 
+def _media_owners(canon):
+    """Yield the objects that own a `media` list, in render order.
+
+    Threads: `thread_items` is authoritative — iterate every tweet's media and
+    IGNORE top-level media (it only mirrors the first item). Single tweet
+    (`thread_items` empty/absent): the canonical root owns the media. This keeps
+    the single-tweet path byte-identical to v0.1.
+    """
+    items = canon.get("thread_items")
+    return items if items else [canon]
+
 def download_all(canon, out_dir):
     img_dir = os.path.join(out_dir, "images")
     os.makedirs(img_dir, exist_ok=True)
-    idx = 0
-    for m in canon.get("media", []):
-        if m.get("type", "photo") != "photo":
-            continue  # videos/GIFs referenced as links, not downloaded
-        url = m.get("url")
-        if not url or not is_allowed_host(url):
-            continue
-        idx += 1
-        name = f"img{idx}.jpg"
-        try:
-            data = _fetch_bytes(url)
-            with open(os.path.join(img_dir, name), "wb") as f:
-                f.write(data)
-            m["local_path"] = f"images/{name}"
-        except Exception as e:  # noqa: BLE001 - keep link on failure
-            sys.stderr.write(f"warn: image {idx} failed: {e}\n")
-            m["local_path"] = None
+    idx = 0  # one global counter across the whole thread -> img1..imgN
+    for owner in _media_owners(canon):
+        for m in owner.get("media", []):
+            if m.get("type", "photo") != "photo":
+                continue  # videos/GIFs referenced as links, not downloaded
+            url = m.get("url")
+            if not url or not is_allowed_host(url):
+                # off-allowlist / missing: keep as a link, do NOT consume a
+                # counter slot and never fetch (per-item SSRF guard).
+                m["local_path"] = None
+                continue
+            idx += 1
+            name = f"img{idx}.jpg"
+            try:
+                data = _fetch_bytes(url)
+                with open(os.path.join(img_dir, name), "wb") as f:
+                    f.write(data)
+                m["local_path"] = f"images/{name}"
+            except Exception as e:  # noqa: BLE001 - keep link on failure
+                sys.stderr.write(f"warn: image {idx} failed: {e}\n")
+                m["local_path"] = None
     return canon
 
 def main(argv=None):
