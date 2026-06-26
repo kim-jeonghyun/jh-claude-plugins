@@ -17,3 +17,4 @@ Brief description of the changes.
 - [ ] SKILL.md has description under 120 characters (if applicable)
 - [ ] No hardcoded absolute paths in SKILL.md
 - [ ] Tested with `claude plugin install` locally
+- [ ] CI checks pass (required for merge)

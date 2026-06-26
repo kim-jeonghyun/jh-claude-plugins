@@ -34,8 +34,21 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guide, commit conventions
 
 | Plugin | Path | Status |
 |--------|------|--------|
-| article-study | `plugins/article-study/` | v0.2.0 |
-| yt-study | `plugins/yt-study/` | v1.1.0 |
+| article-study | `plugins/article-study/` | See CHANGELOG.md |
+| yt-study | `plugins/yt-study/` | See CHANGELOG.md |
+| x-study | `plugins/x-study/` | See CHANGELOG.md |
+
+## Current Focus
+<!-- /session-wrap:wrap 세션 종료 시 업데이트 -->
+
+### 진행 중
+- (세션 종료 시 업데이트)
+
+### 블로커
+- 없음
+
+### 다음 할 일
+- (세션 종료 시 업데이트)
 
 ## Gotchas
 

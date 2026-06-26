@@ -10,6 +10,12 @@ To report a security concern, please use [GitHub's private vulnerability reporti
 
 **Do not** open a public GitHub issue for security vulnerabilities.
 
+## Response Timeline
+
+- **Acknowledgment**: Within 7 days of report
+- **Fix target**: Within 30 days for confirmed vulnerabilities
+- **Disclosure**: A GitHub Security Advisory is published simultaneously with the fix release. Reporters are credited unless they prefer anonymity.
+
 ## Scope
 
 The primary security concerns are:

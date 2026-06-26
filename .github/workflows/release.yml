@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags: ['20*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on main
+        run: |
+          TAG_COMMIT=$(git rev-list -n1 "$GITHUB_REF_NAME")
+          if ! git merge-base --is-ancestor "$TAG_COMMIT" origin/main; then
+            echo "ERROR: tag $GITHUB_REF_NAME does not point to a commit on main"
+            exit 1
+          fi
+
+      - name: Generate release body
+        run: |
+          echo "## Plugin Versions" > release_body.md
+          echo "" >> release_body.md
+          for pj in $(find plugins -name plugin.json | sort); do
+            name=$(jq -r .name "$pj")
+            ver=$(jq -r .version "$pj")
+            echo "- **$name**: v$ver" >> release_body.md
+          done
+          echo "" >> release_body.md
+          echo "See [CHANGELOG.md](https://github.com/kim-jeonghyun/jh-claude-plugins/blob/main/CHANGELOG.md) for detailed version history." >> release_body.md
+
+      - name: Create GitHub Release
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --notes "$(cat release_body.md)" \
+            --title "Milestone $GITHUB_REF_NAME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
