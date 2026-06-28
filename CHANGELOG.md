@@ -9,6 +9,11 @@ This is the **authoritative source** for version history. GitHub Releases link h
 ### Added
 - **x-study** plugin v0.1.0 — archive an X (Twitter) post as a faithful md/epub/pdf with embedded images (mirror-API fetch via fxtwitter/vxtwitter, stdlib EPUB builder, optional pandoc PDF; SSRF-guarded media download).
 
+## [x-study v0.2.1] - 2026-06-28
+
+### Added
+- **Per-format download paths**: `## X Study Settings` now accepts optional `Download path (md)` / `Download path (epub)` / `Download path (pdf)` overrides (resolution: per-format → general `Download path` → `~/Downloads/`). Lets `md` go to an Obsidian vault while `epub`/`pdf` archive elsewhere. PDF now builds its intermediate markdown in the work dir (not the saved md path).
+
 ## [x-study v0.2.0] - 2026-06-26
 
 ### Added

@@ -22,7 +22,14 @@ Defaults if absent (no hard stop): `format: epub`, `download path: ~/Downloads/`
 ## X Study Settings
 - **Format**: epub | md | pdf
 - **Download path**: ~/Downloads/
+- **Download path (md)**: <optional per-format override>
+- **Download path (epub)**: <optional per-format override>
+- **Download path (pdf)**: <optional per-format override>
 ```
+
+**Per-format path resolution.** When rendering format `F`, the output directory is the first of:
+`Download path (F)` → `Download path` → default `~/Downloads/`. This lets `md` go to an Obsidian vault
+while `epub`/`pdf` go elsewhere. Expand `~`/env vars; create the directory if missing.
 
 ### 1. Parse & Acquire
 
@@ -71,19 +78,21 @@ global counter (`img1..imgN`) and applies the `pbs.twimg.com` SSRF guard per ite
 
 ### 4. Render
 
-Filename `{handle}_{slug}_{YYYY-MM-DD}.{ext}` (slug from the title) under the download path. On collision ask: overwrite / suffix / skip.
+Resolve the output dir **per format** (see §0): `<out:md>`, `<out:epub>`, `<out:pdf>`. Filename
+`{handle}_{slug}_{YYYY-MM-DD}.{ext}` (slug from the title); create the dir if missing. On collision ask: overwrite / suffix / skip.
 
-- **md**: render deterministically (do NOT hand-write it), then copy `$WORK/images/` next to the output:
+- **md** → `<out:md>` (render deterministically — do NOT hand-write it — then copy `$WORK/images/` next to it):
   ```
-  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_md.py "$WORK/<id>.json" "<download>/<name>.md" --enrichment "$WORK/enrichment.json"
+  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_md.py "$WORK/<id>.json" "<out:md>/<name>.md" --enrichment "$WORK/enrichment.json"
   ```
-- **epub**:
+- **epub** → `<out:epub>` (self-contained single file; images embedded):
   ```
-  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_epub.py "$WORK/<id>.json" "<download>/<name>.epub" --enrichment "$WORK/enrichment.json" --img-dir "$WORK"
+  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_epub.py "$WORK/<id>.json" "<out:epub>/<name>.epub" --enrichment "$WORK/enrichment.json" --img-dir "$WORK"
   ```
-- **pdf**: build the md first (above), then:
+- **pdf** → `<out:pdf>` (self-contained; build an **intermediate** md in `$WORK` — not the saved md — so its `images/` resolve, then convert):
   ```
-  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_pdf.py "<download>/<name>.md" "<download>/<name>.pdf"
+  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_md.py "$WORK/<id>.json" "$WORK/<name>.md" --enrichment "$WORK/enrichment.json"
+  python3 ${CLAUDE_PLUGIN_ROOT}/skills/x-study/scripts/build_pdf.py "$WORK/<name>.md" "<out:pdf>/<name>.pdf"
   ```
   If it exits 3, report the printed install command and keep md/epub.
 
