@@ -10,6 +10,7 @@ Output: `{handle}_{slug}_{YYYY-MM-DD}.{ext}` in your download path (default `~/D
 
 ## Configuration
 MEMORY.md `## X Study Settings` (format, download path). `tag` is asked each run.
+Optional per-format paths: `Download path (md)` / `Download path (epub)` / `Download path (pdf)` override the general `Download path` (e.g. send `md` to an Obsidian vault, `epub`/`pdf` to a local archive).
 
 ## Dependencies
 - **md / epub**: `python3` on PATH (standard library only — no pip packages).
