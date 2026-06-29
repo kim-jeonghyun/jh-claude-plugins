@@ -42,13 +42,15 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guide, commit conventions
 <!-- /session-wrap:wrap 세션 종료 시 업데이트 -->
 
 ### 진행 중
-- 없음 — x-study v0.2.0 (멀티트윗 스레드 아카이빙) main 머지 완료 (2026-06-26, PR #4)
+- 없음 (직전 세션 2026-06-29: x-study v0.2.0 스레드 → v0.2.1 포맷별 경로, yt-study v1.1.1 자막 픽스, README placeholder 정리 — 모두 main 머지)
 
 ### 블로커
 - 없음
 
 ### 다음 할 일
-- x-study v0.3 후보 (모두 의도적 연기, 문서화됨): ① 인용 트윗 구조적 캡처 ② 단일 트윗 내 ASCII 표 보존(현 플랜의 "단일 트윗 byte-동일" 범위와 충돌) ③ (검토 후) 스레드 자동 수집 대안
+- **유저 액션**: 설치된 플러그인 업데이트(`/plugin` → Manage → Update) → x-study v0.2.1 / yt-study v1.1.1 (안 하면 변경 미적용). 다른 Mac에서 쓰면 `## X Study Settings` 재설정(설정은 기기 간 비동기).
+- **검증**: yt-study `ko-orig` 자막 경로를 실제 한국어 영상으로 1회 스모크 테스트.
+- **x-study v0.3 후보**(의도적 연기): ① 인용 트윗 구조적 캡처 ② 단일 트윗 내 ASCII 표 보존(현 플랜의 "단일 트윗 byte-동일" 범위와 충돌) ③ (재검토) 스레드 자동 수집 대안.
 
 ## Gotchas
 
