@@ -6,8 +6,10 @@ This is the **authoritative source** for version history. GitHub Releases link h
 
 ## [Unreleased]
 
+## [x-study v0.1.0] - 2026-06-25
+
 ### Added
-- **x-study** plugin v0.1.0 — archive an X (Twitter) post as a faithful md/epub/pdf with embedded images (mirror-API fetch via fxtwitter/vxtwitter, stdlib EPUB builder, optional pandoc PDF; SSRF-guarded media download).
+- **x-study** plugin — archive an X (Twitter) post as a faithful md/epub/pdf with embedded images (mirror-API fetch via fxtwitter/vxtwitter, stdlib EPUB builder, optional pandoc PDF; SSRF-guarded media download).
 
 ## [x-study v0.2.1] - 2026-06-28
 
