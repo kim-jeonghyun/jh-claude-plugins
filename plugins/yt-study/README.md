@@ -95,28 +95,28 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 To save study notes directly into your Obsidian vault:
 
 1. During first run, choose **"Obsidian vault"** as save path
-2. Enter the absolute path to your vault folder:
+2. Enter the absolute path to your vault folder (replace the `<…>` placeholders with your own):
    ```
    # macOS (local)
-   /Users/yourname/Documents/ObsidianVault
+   /Users/<you>/Documents/<YourVault>
 
    # macOS (iCloud sync)
-   /Users/yourname/Library/Mobile Documents/iCloud~md~obsidian/Documents/VaultName
+   /Users/<you>/Library/Mobile Documents/iCloud~md~obsidian/Documents/<YourVault>
 
    # macOS (Google Drive)
-   /Users/yourname/Library/CloudStorage/GoogleDrive-you@gmail.com/My Drive/ObsidianVault
+   /Users/<you>/Library/CloudStorage/GoogleDrive-<your-email>/My Drive/<YourVault>
 
    # macOS (Dropbox)
-   /Users/yourname/Dropbox/ObsidianVault
+   /Users/<you>/Dropbox/<YourVault>
 
    # Linux (local)
-   /home/yourname/ObsidianVault
+   /home/<you>/<YourVault>
 
    # Windows (local)
-   C:\Users\yourname\Documents\ObsidianVault
+   C:\Users\<you>\Documents\<YourVault>
 
    # Windows (OneDrive)
-   C:\Users\yourname\OneDrive\ObsidianVault
+   C:\Users\<you>\OneDrive\<YourVault>
    ```
 
    > **Tip**: Not sure where your vault is? Open Obsidian → Settings → Files and links → check "Vault path" at the top.
@@ -125,7 +125,7 @@ To save study notes directly into your Obsidian vault:
 Study notes are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
 
 ```
-YourVault/
+<YourVault>/
   tech/
     2026-03-08-video-title.md
   investing/
