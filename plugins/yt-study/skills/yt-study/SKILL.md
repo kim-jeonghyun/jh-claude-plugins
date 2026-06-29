@@ -83,7 +83,7 @@ Announce to user: "This is a {preset} video ({duration}). Using {preset} analysi
 scripts/extract_transcript.sh "<URL>" [output_dir]
 ```
 
-Priority: manual subtitles (ko > en) > auto-generated (ko > en).
+Priority: manual (ko-orig > ko > en) > auto-generated (ko-orig > ko > en). Success is detected by an actual output file, not yt-dlp's exit code (it returns 0 even when a language is missing).
 
 If no subtitles available: inform user "Cannot extract subtitles for this video." and stop.
 
@@ -226,7 +226,9 @@ After quiz, ask via AskUserQuestion:
 
 ## Subtitle Language Priority
 
-1. Korean manual -> 2. English manual -> 3. Korean auto -> 4. English auto
+1. Korean (original) manual -> 2. Korean manual -> 3. English manual -> 4. Korean (original) auto -> 5. Korean auto -> 6. English auto
+
+`ko-orig` is YouTube's "Korean (Original)" track on natively-Korean videos (most faithful; preferred over the sometimes machine-translated `ko`).
 
 ## Language Handling
 

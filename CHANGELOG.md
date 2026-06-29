@@ -30,6 +30,15 @@ This is the **authoritative source** for version history. GitHub Releases link h
 ### Security
 - Untrusted-content fence + plain-text output validation for the enrichment step; every field (incl. LLM title/alt) entity-encoded before XHTML/Markdown; personal-use disclaimer added.
 
+## [yt-study v1.1.1] - 2026-06-29
+
+### Fixed
+- **Silent subtitle failure**: `extract_transcript.sh` relied on yt-dlp's exit code, which is `0` even when no subtitle exists — so "no subtitles" was treated as success and produced an empty transcript. Success is now detected by an actual output file.
+
+### Changed
+- Subtitle priority refined and tried one-at-a-time in strict order: manual `ko-orig > ko > en` → auto `ko-orig > ko > en` (adds YouTube's "Korean (Original)" track, preferred over the sometimes machine-translated `ko`).
+- Use `--convert-subs srt` (download native VTT → convert via ffmpeg) instead of `--sub-format srt`; modern yt-dlp flag names; clear stale outputs before detection; if SRT conversion fails (no ffmpeg) keep the VTT with a warning instead of losing it. Glob-based (not `ls`) file detection — shellcheck-clean and safe with spaces in the output path.
+
 ## [yt-study v1.1.0] - 2026-03-09
 
 ### Changed
