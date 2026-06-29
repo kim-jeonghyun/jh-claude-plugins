@@ -67,7 +67,7 @@ To save study notes directly into your Obsidian vault:
    /Users/<you>/Library/Mobile Documents/iCloud~md~obsidian/Documents/<YourVault>
 
    # macOS (Google Drive)
-   /Users/<you>/Library/CloudStorage/GoogleDrive-<your-email>/My Drive/<YourVault>
+   /Users/<you>/Library/CloudStorage/GoogleDrive-<you>@gmail.com/My Drive/<YourVault>
 
    # macOS (Dropbox)
    /Users/<you>/Dropbox/<YourVault>
@@ -88,7 +88,7 @@ To save study notes directly into your Obsidian vault:
 Study notes are saved as standard Markdown with YAML frontmatter, fully compatible with Obsidian:
 
 ```
-<YourVault>/
+YourVault/
   tech/
     2026-03-08-article-title.md
   investing/
