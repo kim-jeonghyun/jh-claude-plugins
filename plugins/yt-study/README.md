@@ -87,7 +87,7 @@ Settings are stored in MEMORY.md (project-level or global `~/.claude/memory/MEMO
 - **Quiz scaling**: 9-15 questions based on video length
 - **SRT subtitle extraction**: reliable format (avoids upstream json3 issues)
 - **Output flexibility**: Obsidian / Notion / local file save
-- **Subtitle priority**: manual subtitles preferred over auto-generated
+- **Subtitle priority**: manual preferred over auto-generated; `ko-orig` (Korean original) > `ko` > `en`
 - **Cross-platform**: macOS, Linux, Windows supported
 
 ## Obsidian Integration (Optional)
